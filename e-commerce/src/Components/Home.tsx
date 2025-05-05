@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 import shoes from '../assets/shoes.jpg'
 import bag from '../assets/bag.jpg'
 import watch from '../assets/watch.jpg'
+import Footer from '../Small/Footer'
+import Header from '../Small/Header'
 
 
 const Home:React.FC = () => {
   return (
-<div className=' grid grid-cols-1 justify-items-center w-full text-center gap-9 '>
+<div className=' grid grid-cols-1 justify-items-center gap-9 w-full text-center '>
+  <Header/>
   <div className='grid grid-cols-1 gap-6 bg-white px-8 w-3/5 rounded-lg shadow-md  pt-7 pb-4'>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
     Welcome to ShopEasy
@@ -52,7 +55,7 @@ const Home:React.FC = () => {
   <h1 className='text-[#634bc1] text-3xl font-bold'>
   Featured Products
   </h1>
-  <div className='grid grid-cols-3 gap-2 w-5/6 '>
+  <div className='grid grid-cols-3 gap-4 w-5/6 '>
   <div className='grid grid-cols-1 bg-white justify-items-center rounded-lg shadow-md p-4'>
     <img src={shoes} alt="shoes" className='object-contain rounded-md' />
     <h1 className='text-[#634bc1] text-xl font-bold '>
@@ -78,6 +81,7 @@ const Home:React.FC = () => {
   <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md'>Buy Now</Link>
   </div>
   </div>
+<Footer/>
 </div>
   )
 }
