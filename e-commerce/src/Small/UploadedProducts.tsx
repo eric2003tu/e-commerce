@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 interface Product {
-  id: number
+  id: string,
   title: string
   price: string
   image: string
