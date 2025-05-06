@@ -4,7 +4,7 @@ import Footer from '../Small/Footer'
 
 const Cart :React.FC = () => {
   return (
-    <div>
+    <div className='grid grid-cols-1 gap-5'>
      <Header/>
      <Footer/> 
     </div>
