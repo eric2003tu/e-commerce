@@ -3,44 +3,63 @@ import { Link } from 'react-router-dom'
 
 interface Product {
   id: string,
-  title: string
-  price: string
+  title: string,
+  price: string,
   image: string
 }
 
 const UploadedProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [warning, setWarning] = useState<string>('')
+  const [warningColor, setWarningColor] = useState<string>('blue')
 
   useEffect(() => {
+    setIsLoading(true)
     fetch('https://www.products.com/api/products')
-      .then((response) => response.json())
-      .then((data) => setProducts(data))
+      .then((response) => {
+        return response.json()  // ✅ Return response.json()
+      })
+      .then((data) => {
+        setProducts(data)
+        setIsLoading(false)
+      })
       .catch((error) => {
         console.error('No Products Uploaded or no network connection', error)
+        setWarning('No Products Uploaded or no network connection')
+        setWarningColor('red')
+        setIsLoading(false)
       })
   }, [])
 
   return (
-    <div id='products' className='grid grid-cols-4 gap-4 w-full justify-items-center'>
-      {products.length > 0 ? products.map((product) => (
-        <div key={product.id} className='grid grid-cols-1 bg-white justify-items-center rounded-lg shadow-md p-4'>
-          <img src={product.image} alt={`Image of ${product.title}`} className='object-contain rounded-md' />
-          <h1 className='text-lg font-bold mt-2'>{product.title}</h1>
-          <p className='text-gray-600'>{product.price}</p>
-          <Link 
-  to='/signup' 
-  className='text-center text-gray-100 p-2 px-4 w-1/2 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors'
-  onClick={() => {
-    localStorage.setItem('id',product.id)
-  }}
->
-  Buy Now
-</Link>
+    <div id='products' className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full justify-items-center px-4'>
+      
+      {warning && (
+        <p className={`text-${warningColor}-600 text-center font-medium col-span-full`}>
+          {warning}
+        </p>
+      )}
+
+      {isLoading ? (
+        <div className='flex items-center justify-center col-span-full my-7'>
+          <div className='animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500'></div>
         </div>
-      )) : (
-        <div className='flex justify-center items-center w-full col-span-4 m-7'>
-  <h1 className='text-[20px] font-semibold text-gray-500'>No products uploaded yet </h1>
-</div>
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className='bg-white rounded-lg shadow-md p-4 w-full max-w-xs'>
+            <img src={product.image} alt={`Image of ${product.title}`} className='object-contain h-40 w-full rounded-md mb-2' />
+            <h1 className='text-lg font-bold'>{product.title}</h1>
+            <p className='text-gray-600 mb-3'>{product.price}</p>
+            <Link 
+              to='/signup' 
+              className='block text-center text-white p-2 px-4 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors'
+              onClick={() => localStorage.setItem('id', product.id)}
+            >
+              Buy Now
+            </Link>
+          </div>
+        ))
       )}
     </div>
   )

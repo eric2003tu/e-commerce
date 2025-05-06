@@ -1,26 +1,47 @@
-import React from 'react'
-import logo from '../assets/logo.jpg'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import logo from '../assets/logo.jpg';
+import { Link } from 'react-router-dom';
+import { CiMenuBurger } from "react-icons/ci";
 
-const Header :React.FC= () => {
+const Header: React.FC = () => {
+  const [menu, setMenu] = useState<boolean>(false);
+
   return (
-    <nav className='bg-[#634bc1] w-full grid pr-3 pl-1 py-1 text-gray-100 text-center top-0   text-[18px] font-bold sticky'>
-    <div className='grid grid-cols-2'>
-    <div className='flex flex-row gap-2'>
-      <Link to ='/'>
-      <img src={logo} alt='logo' className='h-[45px] rounded-full'/>
-      </Link>
-      <h1 className='mt-2'>ShopEasy</h1>
-    </div>
-    <ul className='flex flex-row gap-9 justify-self-end mt-2 text-[20px]'>
-      <li><Link to='/products'>Products</Link></li>
-      <li><Link to='/products'>Login</Link></li>
-      <li><Link to='/products'>Sign Up</Link></li>
-      {/* <li><GoogleTranslate /></li> */}
-    </ul>
-    </div>
-  </nav>
-  )
-}
+    <nav className='bg-[#634bc1] w-full px-4 text-gray-100 sticky top-0 h-fit  font-bold text-[18px]'>
+      <div className='flex items-center justify-between'>
+        {/* Logo and Title */}
+        <div className='flex items-center gap-2'>
+          <Link to='/'>
+            <img src={logo} alt='logo' className='h-[45px] rounded-full' />
+          </Link>
+          <h1 className='text-white'>ShopEasy</h1>
+        </div>
 
-export default Header
+        {/* Burger Menu (Visible on small screens) */}
+        <div className='md:hidden lg:hidden'>
+          <CiMenuBurger size={30} onClick={() => setMenu(!menu)} className='cursor-pointer' />
+        </div>
+
+        {/* Desktop Menu */}
+        <ul className=' hidden md:flex lg:flex flex-row gap-9 text-[20px]'>
+          <li><Link to='/products'>Products</Link></li>
+          <li><Link to='/cart'>Cart</Link></li>
+          <li><Link to='/login'>Login</Link></li>
+          <li><Link to='/signup'>Sign Up</Link></li>
+        </ul>
+      </div>
+
+      {/* Mobile Menu (Dropdown) */}
+      {menu && (
+        <ul className={`absolute flex flex-col top-11  bg-[#9984ef] w-fit right-0 text-[18px] md:hidden lg:hidden rounded-b rounded-r-0  transition-all duration-500 ease-in-out tra ${menu ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
+          <li className='hover:bg-[#cac4e4] p-2 px-4'><Link to='/products'>Products</Link></li>
+          <li className='hover:bg-[#cec5f0] p-2 px-4'><Link to='/cart'>Cart</Link></li>
+          <li className='hover:bg-[#634bc1] p-2 px-4'><Link to='/login'>Login</Link></li>
+          <li className='hover:bg-[#634bc1] p-2 px-4'><Link to='/signup'>Sign Up</Link></li>
+        </ul>
+      )}
+    </nav>
+  );
+};
+
+export default Header;
