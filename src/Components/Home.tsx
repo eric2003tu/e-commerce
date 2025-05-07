@@ -20,7 +20,7 @@ const Home:React.FC = () => {
 
 <strong className='text-gray-600'> Join us today </strong>and enjoy an exclusive shopping experience tailored to your needs.
     </p>
-    <div className='justify-items-center grid grid-cols-2'>
+    <div className='justify-items-center grid grid-cols-2 gap-2.5'>
       <Link to ='/signup' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md'>Sign Up Now</Link>
       <Link to='/products' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md'>Start Shopping</Link>
     </div>
