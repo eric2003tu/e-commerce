@@ -5,6 +5,7 @@ import Users from './Users';
 import Products from './AdminProducts';
 import Settings from './Settings';
 import { Link } from 'react-router-dom';
+import Footer from '../Small/Footer';
 
 function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -72,6 +73,7 @@ function AdminDashboard() {
   };
 
   return (
+    <div>
     <div className="flex flex-col lg:flex-row h-screen bg-gray-50">
       {/* Mobile Header */}
       <div className="lg:hidden bg-[#433d61] text-white p-4 flex justify-between items-center">
@@ -241,6 +243,8 @@ function AdminDashboard() {
           )}
         </div>
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 }

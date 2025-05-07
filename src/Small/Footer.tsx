@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="w-full bg-[#433d61] text-white px-4 py-6 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-3 sm:grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 gap-6 sm:gap-8">
 
         {/* Search */}
 
@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
 
       {/* Footer Bottom */}
       <div className="max-w-7xl mx-auto mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-[#ffdc89] text-center text-xs sm:text-sm">
-        <p>© 2025 ShopEasy. All rights reserved.</p>
+        <p>© 2025 StyleStore. All rights reserved.</p>
         <div className="flex justify-center gap-3 sm:gap-4 mt-2 flex-wrap">
           {['Privacy', 'Terms', 'Sitemap'].map(item => (
             <span key={item} className="cursor-pointer text-[#ffdc89] hover:underline">
