@@ -14,9 +14,9 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Search */}
-        <div>
-          <h3 className="text-lg font-semibold mb-3">Search</h3>
-          <form onSubmit={handleSearch} className="flex w-full">
+        <div className='w-full'>
+          <h1 className="text-gray-100 text-md text-start mt-2">Find your desired product</h1>
+          <form onSubmit={handleSearch} className="flex flex-row w-full">
             <input
               type="text"
               placeholder="Find products..."
@@ -31,7 +31,6 @@ const Footer: React.FC = () => {
               <IoMdSearch size={20} />
             </button>
           </form>
-          <p className="text-[#ffdc89] text-sm italic mt-2">Find your perfect style</p>
         </div>
 
         {/* Shop */}
