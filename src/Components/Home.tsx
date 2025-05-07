@@ -11,7 +11,7 @@ const Home:React.FC = () => {
   return (
 <div className=' grid grid-cols-1 justify-items-center gap-9 w-full text-center '>
   <Header/>
-  <div className='grid grid-cols-1 gap-6 bg-white px-8 w-3/5 rounded-lg shadow-md  pt-7 pb-4'>
+  <div className='grid grid-cols-1 gap-6 bg-white px-8 lg:w-3/5 rounded-lg shadow-md  pt-7 pb-4'>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
     Welcome to ShopEasy
   </h1>
@@ -28,7 +28,7 @@ const Home:React.FC = () => {
   <h1 className='text-[#634bc1] text-3xl font-bold'>
     Why to Choose ShopEasy?
   </h1>
-  <div className='bg-white w-4/5 grid grid-cols-1 gap-3 tex shadow-md rounded-lg just p-5 px-7 text-start'>
+  <div className='bg-white lg:w-4/5 grid grid-cols-1 gap-3 tex shadow-md rounded-lg just p-5 px-7 text-start'>
   <h1 className='text-[#634bc1] text-xl font-bold '>
   Wide Product Range
   </h1>
@@ -36,7 +36,7 @@ const Home:React.FC = () => {
     Explore an extensive collection of high-quality products across multiple categories,<br/>all at competitive prices
   </p>
   </div>
-  <div className='bg-white w-4/5 grid grid-cols-1 gap-3 tex shadow-md rounded-lg just p-5 px-7 text-start'>
+  <div className='bg-white lg:w-4/5 grid grid-cols-1 gap-3 tex shadow-md rounded-lg just p-5 px-7 text-start'>
   <h1 className='text-[#634bc1] text-xl font-bold '>
   Secure Payments
   </h1>
@@ -44,7 +44,7 @@ const Home:React.FC = () => {
   Shop with confidence using our safe and secure payment options. Your privacy and security <br/>are our top priority.
   </p>
   </div>
-  <div className='bg-white w-4/5 grid grid-cols-1 gap-3 tex shadow-md rounded-lg just p-5 px-7 text-start'>
+  <div className='bg-white lg:w-4/5 grid grid-cols-1 gap-3 tex shadow-md rounded-lg just p-5 px-7 text-start'>
   <h1 className='text-[#634bc1] text-xl font-bold '>
   Fast Delivery
   </h1>
@@ -55,7 +55,7 @@ const Home:React.FC = () => {
   <h1 className='text-[#634bc1] text-3xl font-bold'>
   Featured Products
   </h1>
-  <div className='grid grid-cols-3 gap-4 w-5/6 '>
+  <div className='grid lg:grid-cols-3 gap-4 lg:w-5/6 '>
   <div className='grid grid-cols-1 bg-white justify-items-center rounded-lg shadow-md p-4'>
     <img src={shoes} alt="shoes" className='object-contain rounded-md' />
     <h1 className='text-[#634bc1] text-xl font-bold '>

@@ -7,9 +7,9 @@ import UploadedProducts from '../Small/UploadedProducts'
 const Products :React.FC = () => {
   
   return (
-<div className=' grid grid-cols-1 justify-items-center min-h-screen w-full text-center '>
+<div className=' grid grid-cols-1 justify-items-center min-h-screen w-full text-center gap-6'>
   <Header/>
-  <div className='grid grid-cols-1 gap-6 bg-white px-8 w-3/5 rounded-lg shadow-md justify-items-center  pt-7 pb-4'>
+  <div className='grid grid-cols-1 gap-6 bg-white px-8 l:w-3/5 rounded-lg shadow-md justify-items-center  pt-7 pb-4'>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
     Welcome to ShopEasy
   </h1>

@@ -56,7 +56,7 @@ const UploadedProducts: React.FC = () => {
               className='block text-center text-white p-2 px-4 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors'
               onClick={() => localStorage.setItem('id', product.id)}
             >
-              Buy Now
+              View More
             </Link>
           </div>
         ))

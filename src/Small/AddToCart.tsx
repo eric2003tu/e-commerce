@@ -74,7 +74,7 @@ const AddToCart: React.FC = () => {
   }
 
   return (
-    <div className='w-2/3 mx-auto bg-white rounded-lg shadow-md p-6 grid grid-cols-2 gap-6'>
+    <div className='lg:w-2/3 mx-auto bg-white rounded-lg shadow-md p-6 grid grid-cols-2 gap-6'>
       <img
         src={product.image}
         alt={`Image of ${product.title}`}
@@ -85,7 +85,7 @@ const AddToCart: React.FC = () => {
         <p>{product.description}</p>
         <p className='text-[#634bc1] font-semibold'>{product.price}</p>
         <button
-          className='text-center text-white p-2 px-4 w-1/2 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors'
+          className='text-center text-white p-2 px-4 lg:w-1/2 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors'
           onClick={addingToCart}
         >
           Buy Now
