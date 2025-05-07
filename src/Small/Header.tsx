@@ -5,7 +5,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { BsCart2 } from "react-icons/bs";
 import { MdLogin, MdAppRegistration } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa";
-import { IoMdSearch } from 'react-icons/io';
+import { MdAdminPanelSettings } from "react-icons/md";
 
 const Header: React.FC = () => {
   const [menu, setMenu] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
           </li>
           <li className='flex items-center gap-1'>
             <BsCart2 size={22} />
-            <Link to='/login'>Cart</Link>
+            <Link to='/cart'>Cart</Link>
           </li>
           <li className='flex items-center gap-1'>
             <MdLogin size={22} />
@@ -47,6 +47,10 @@ const Header: React.FC = () => {
           <li className='flex items-center gap-1'>
             <MdAppRegistration size={22} />
             <Link to='/signup'>Sign Up</Link>
+          </li>
+          <li className='flex items-center gap-1'>
+            <MdAdminPanelSettings size={22} />
+            <Link to='/admin'>Admin</Link>
           </li>
         </ul>
       </div>
@@ -69,6 +73,10 @@ const Header: React.FC = () => {
           <li className='hover:bg-[#634bc1] p-2 px-4 flex items-center gap-2'>
             <MdAppRegistration size={20} />
             <Link to='/signup'>Sign Up</Link>
+          </li>
+          <li className='hover:bg-[#634bc1] p-2 px-4 flex items-center gap-2'>
+            <MdAdminPanelSettings size={22} />
+            <Link to='/admin'>Admin</Link>
           </li>
         </ul>
       )}

@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash, FaGoogle, FaFacebookF, FaTwitter, FaUser } from 'rea
 import { HiOutlineMail, HiOutlineLockClosed, HiOutlinePhone } from 'react-icons/hi';
 import Header from '../Small/Header';
 import Footer from '../Small/Footer';
+import Easy from '../assets/Easy.png'
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -152,7 +153,8 @@ const Signup: React.FC = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-0">
           {/* Left Column - Image */}
           <div className="hidden lg:block relative bg-gradient-to-br from-[#634bc1] to-[#ffdc89]">
-            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center mix-blend-overlay opacity-20"></div>
+            <div className="absolute inset-0  bg-cover bg-center mix-blend-overlay opacity-20 bg-no-repeat"
+            style={{backgroundImage: `url(${Easy})`}}></div>
             <div className="relative h-full flex flex-col justify-center p-12 text-white">
               <h2 className="text-4xl font-bold mb-4">Join ShopEasy!</h2>
               <p className="text-xl mb-8">Create your account to unlock personalized shopping benefits.</p>
