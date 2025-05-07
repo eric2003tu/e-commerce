@@ -10,13 +10,13 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="w-full bg-[#433d61] text-white px-4 py-10 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        
+    <footer className="w-full bg-[#433d61] text-white px-4 py-6 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+
         {/* Search */}
-        <div className='w-full'>
-          <h1 className="text-gray-100 text-md text-start mt-2">Find your desired product</h1>
-          <form onSubmit={handleSearch} className="flex flex-row w-full">
+        <div className="w-full">
+          <h1 className="text-gray-100 text-sm sm:text-md text-start mt-2 mb-2">Find your desired product</h1>
+          <form onSubmit={handleSearch} className="flex w-full">
             <input
               type="text"
               placeholder="Find products..."
@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
             />
             <button
               type="submit"
-              className="bg-[#ffdc89] text-[#634bc1] px-4 py-2 rounded-r hover:bg-[#e6c97d] transition"
+              className="bg-[#ffdc89] text-[#634bc1] px-3 py-2 rounded-r hover:bg-[#e6c97d] transition"
             >
               <IoMdSearch size={20} />
             </button>
@@ -35,8 +35,8 @@ const Footer: React.FC = () => {
 
         {/* Shop */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Shop</h3>
-          <ul className="space-y-2">
+          <h3 className="text-sm sm:text-lg font-semibold mb-3">Shop</h3>
+          <ul className="space-y-2 text-sm sm:text-base">
             {['All Products', 'Electronics', 'Clothing', 'Accessories', 'Home & Living'].map(item => (
               <li key={item} className="cursor-pointer hover:text-[#ffdc89] hover:underline">
                 {item}
@@ -47,8 +47,8 @@ const Footer: React.FC = () => {
 
         {/* Customer Service */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Customer Service</h3>
-          <ul className="space-y-2">
+          <h3 className="text-sm sm:text-lg font-semibold mb-3">Customer Service</h3>
+          <ul className="space-y-2 text-sm sm:text-base">
             {['Contact Us', 'Shipping & Returns', 'FAQs', 'Privacy Policy', 'Terms & Conditions'].map(item => (
               <li key={item} className="cursor-pointer hover:text-[#ffdc89] hover:underline">
                 {item}
@@ -59,23 +59,23 @@ const Footer: React.FC = () => {
 
         {/* Newsletter */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Stay Connected</h3>
-          <p className="mb-4">Subscribe for updates and exclusive offers.</p>
+          <h3 className="text-sm sm:text-lg font-semibold mb-3">Stay Connected</h3>
+          <p className="mb-4 text-sm sm:text-base">Subscribe for updates and exclusive offers.</p>
           <input
             type="email"
             placeholder="Your email"
-            className="w-full px-4 py-2 rounded text-gray-100 mb-2 focus:outline-none border border-white"
+            className="w-full px-3 py-2 rounded text-gray-100 mb-2 focus:outline-none border border-white"
           />
-          <button className="w-full bg-[#ffdc89] text-[#634bc1] px-4 py-2 rounded font-medium hover:bg-[#e6c97d] transition">
+          <button className="w-full bg-[#ffdc89] text-[#634bc1] px-3 py-2 rounded font-medium hover:bg-[#e6c97d] transition">
             Subscribe
           </button>
         </div>
       </div>
 
       {/* Footer Bottom */}
-      <div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-[#ffdc89] text-center text-sm">
+      <div className="max-w-7xl mx-auto mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-[#ffdc89] text-center text-xs sm:text-sm">
         <p>© 2025 StyleStore. All rights reserved.</p>
-        <div className="flex justify-center gap-4 mt-2 flex-wrap">
+        <div className="flex justify-center gap-3 sm:gap-4 mt-2 flex-wrap">
           {['Privacy', 'Terms', 'Sitemap'].map(item => (
             <span key={item} className="cursor-pointer text-[#ffdc89] hover:underline">
               {item}
