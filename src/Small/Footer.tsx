@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="w-full bg-[#634bc1] text-white px-4 py-10 sm:px-6 lg:px-8">
+    <footer className="w-full bg-[#433d61] text-white px-4 py-10 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Search */}
@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
               placeholder="Find products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 rounded-l text-gray-800 focus:outline-none border border-white"
+              className="w-full px-3 py-2 rounded-l text-gray-100 focus:outline-none border border-white"
             />
             <button
               type="submit"
@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
           <input
             type="email"
             placeholder="Your email"
-            className="w-full px-4 py-2 rounded text-gray-800 mb-2 focus:outline-none border border-white"
+            className="w-full px-4 py-2 rounded text-gray-100 mb-2 focus:outline-none border border-white"
           />
           <button className="w-full bg-[#ffdc89] text-[#634bc1] px-4 py-2 rounded font-medium hover:bg-[#e6c97d] transition">
             Subscribe

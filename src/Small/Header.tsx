@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const [menu, setMenu] = useState<boolean>(false);
 
   return (
-    <nav className='bg-[#634bc1] w-full px-4 text-gray-100 sticky top-0 h-fit font-bold text-[18px] z-50'>
+    <nav className='bg-[#634bc1] w-full px-4 text-gray-100 backdrop-blur-sm sticky top-0 h-fit font-bold text-[18px] z-50'>
       <div className='flex items-center justify-between'>
         {/* Logo and Title */}
         <div className='flex items-center gap-2'>
