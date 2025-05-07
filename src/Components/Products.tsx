@@ -19,7 +19,7 @@ const Products :React.FC = () => {
       <Link to='/products' className='text-center text-gray-100 p-2 px-8 w-fit bg-[#634bc1] rounded-md'>Start Shopping</Link>
   </div>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
-    Why to Choose ShopEasy?
+  Start Your purchase today
   </h1>
   <UploadedProducts/>
   <Footer/>
