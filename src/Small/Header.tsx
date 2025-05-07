@@ -31,8 +31,9 @@ const Header: React.FC = () => {
             <FaBoxOpen size={22} />
             <Link to='/products'>Products</Link>
           </li>
-          <li>
-            <Link to='/cart'><BsCart2 size={28} /></Link>
+          <li className='flex items-center gap-1'>
+            <BsCart2 size={22} />
+            <Link to='/login'>Cart</Link>
           </li>
           <li className='flex items-center gap-1'>
             <MdLogin size={22} />
