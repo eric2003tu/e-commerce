@@ -5,6 +5,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { BsCart2 } from "react-icons/bs";
 import { MdLogin, MdAppRegistration } from "react-icons/md";
 import { FaBoxOpen } from "react-icons/fa";
+import { IoMdSearch } from 'react-icons/io';
 
 const Header: React.FC = () => {
   const [menu, setMenu] = useState<boolean>(false);
@@ -20,6 +21,7 @@ const Header: React.FC = () => {
           <h1 className='text-white'>ShopEasy</h1>
         </div>
 
+
         {/* Burger Menu */}
         <div className='md:hidden lg:hidden'>
           <CiMenuBurger size={30} onClick={() => setMenu(!menu)} className='cursor-pointer' />
@@ -27,6 +29,9 @@ const Header: React.FC = () => {
 
         {/* Desktop Menu */}
         <ul className='hidden md:flex lg:flex flex-row gap-9 text-[20px] items-center'>
+          <li>
+            
+          </li>
           <li className='flex items-center gap-1'>
             <FaBoxOpen size={22} />
             <Link to='/products'>Products</Link>

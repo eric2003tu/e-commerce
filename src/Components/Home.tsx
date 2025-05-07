@@ -5,13 +5,14 @@ import bag from '../assets/bag.jpg'
 import watch from '../assets/watch.jpg'
 import Footer from '../Small/Footer'
 import Header from '../Small/Header'
+import Search from '../Small/Search'
 
 
 const Home:React.FC = () => {
   return (
 <div className=' grid grid-cols-1 justify-items-center gap-9 w-full text-center '>
   <Header/>
-  <div className='grid grid-cols-1 gap-6 bg-white px-8 lg:w-3/5 rounded-lg shadow-md  pt-7 pb-4'>
+  <div className='grid grid-cols-1 gap-6 bg-white px-8 justify-items-center lg:w-3/5 rounded-lg shadow-md  pt-7 pb-4'>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
     Welcome to ShopEasy
   </h1>
@@ -24,6 +25,7 @@ const Home:React.FC = () => {
       <Link to ='/signup' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md'>Sign Up Now</Link>
       <Link to='/products' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md'>Start Shopping</Link>
     </div>
+    <Search/>
   </div>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
     Why to Choose ShopEasy?

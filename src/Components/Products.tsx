@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Footer from '../Small/Footer'
 import Header from '../Small/Header'
 import UploadedProducts from '../Small/UploadedProducts'
+import Search from '../Small/Search'
 
 const Products :React.FC = () => {
   
@@ -17,6 +18,7 @@ const Products :React.FC = () => {
     Your one-stop shop for everything you need! Explore our wide range of products, exclusive deals,<br/> and seamless shopping experience.
     </p>
       <Link to='/products' className='text-center text-gray-100 p-2 px-8 w-fit bg-[#634bc1] rounded-md'>Start Shopping</Link>
+      <Search/>
   </div>
   <h1 className='text-[#634bc1] text-3xl font-bold'>
   Start Your purchase today
