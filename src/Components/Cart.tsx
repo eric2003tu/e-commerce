@@ -65,12 +65,12 @@ const Cart: React.FC = () => {
       <h1 className='text-[#634bc1] text-3xl font-bold'>
         Welcome to ShopEasy
       </h1>
-      
+{/*       
       {warning && (
         <p className={`${warning.includes('Failed') ? 'text-red-600' : 'text-blue-600'} text-center font-medium`}>
           {warning}
         </p>
-      )}
+      )} */}
 
       {isLoading ? (
         <div className='flex justify-center items-center m-7'>
