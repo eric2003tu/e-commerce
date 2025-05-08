@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash, FaGoogle, FaFacebookF, FaTwitter } from 'react-icons
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import Header from '../Small/Header';
 import Footer from '../Small/Footer';
+import Otp from './Otp';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [otp,setOtp] = useState<boolean>(false)
 
   // Regular expressions for validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -81,7 +83,7 @@ const Login: React.FC = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://www.shopeasy.com.api/login', {
+      const response = await fetch('https://www.shopeasy.com/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,6 +101,7 @@ const Login: React.FC = () => {
       
       const data = await response.json();
       console.log('Login successful:', data);
+      setOtp(true)
       // Handle successful login (redirect, store token, etc.)
       
     } catch (error) {
@@ -140,6 +143,8 @@ const Login: React.FC = () => {
 
           {/* Right Column - Login Form */}
           <div className="bg-white flex items-center justify-center p-8 sm:p-12 lg:p-16">
+          {  otp ? <Otp/>
+          :
             <div className="w-full max-w-md">
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">Login to ShopEasy</h1>
@@ -291,10 +296,9 @@ const Login: React.FC = () => {
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-      </main>
-
+}</div>
+            </div>
+          </main>
       <Footer/>
     </div>
   );

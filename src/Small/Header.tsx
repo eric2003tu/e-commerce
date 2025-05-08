@@ -1,86 +1,132 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.jpg';
-import { Link } from 'react-router-dom';
-import { CiMenuBurger } from "react-icons/ci";
-import { BsCart2 } from "react-icons/bs";
-import { MdLogin, MdAppRegistration } from "react-icons/md";
-import { FaBoxOpen } from "react-icons/fa";
-import { MdAdminPanelSettings } from "react-icons/md";
+import { CiMenuBurger, CiSearch } from "react-icons/ci";
+import { BsCart2, BsPerson, BsBoxSeam } from "react-icons/bs";
+import { MdLogin, MdAppRegistration, MdAdminPanelSettings } from "react-icons/md";
+import { FaRegUserCircle } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
 
 const Header: React.FC = () => {
-  const [menu, setMenu] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [scrolled, setScrolled] = useState<boolean>(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location]);
 
   return (
-    <nav className='bg-[#634bc1] w-full px-4 text-gray-100 backdrop-blur-sm sticky top-0 h-fit font-bold text-[18px] z-50'>
-      <div className='flex items-center justify-between'>
-        {/* Logo and Title */}
-        <div className='flex items-center gap-2'>
-          <Link to='/'>
-            <img src={logo} alt='logo' className='h-[45px] rounded-full' />
-          </Link>
-          <h1 className='text-white'>ShopEasy</h1>
+    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#634bc1] shadow-lg' : 'bg-[#634bc1]/90 backdrop-blur-sm'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo and Brand */}
+          <div className="flex-shrink-0 flex items-center">
+            <Link to="/" className="flex items-center gap-3 group">
+              <img 
+                src={logo} 
+                alt="ShopEasy Logo" 
+                className="h-10 w-10 md:h-12 md:w-12 rounded-full border-2 border-white/30 group-hover:border-[#ffdc89] transition-all"
+              />
+              <span className="text-white font-bold text-xl md:text-2xl ml-2">
+                Shop<span className="text-[#ffdc89]">Easy</span>
+              </span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1 lg:space-x-4">
+            <Link 
+              to="/products" 
+              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
+            >
+              <BsBoxSeam className="text-lg" />
+              Products
+            </Link>
+            <Link 
+              to="/cart" 
+              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
+            >
+              <BsCart2 className="text-lg" />
+              Cart
+            </Link>
+            <Link 
+              to="/login" 
+              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
+            >
+              <MdLogin className="text-lg" />
+              Login
+            </Link>
+            <Link 
+              to="/admin" 
+              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
+            >
+              <MdAdminPanelSettings className="text-lg" />
+              Admin
+            </Link>
+          </nav>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-white/10 focus:outline-none transition-colors"
+              aria-expanded="false"
+            >
+              <CiMenuBurger className="block h-6 w-6" />
+            </button>
+          </div>
         </div>
-
-
-        {/* Burger Menu */}
-        <div className='md:hidden lg:hidden'>
-          <CiMenuBurger size={30} onClick={() => setMenu(!menu)} className='cursor-pointer' />
-        </div>
-
-        {/* Desktop Menu */}
-        <ul className='hidden md:flex lg:flex flex-row gap-9 text-[20px] items-center'>
-          <li>
-            
-          </li>
-          <li className='flex items-center gap-1'>
-            <FaBoxOpen size={22} />
-            <Link to='/products'>Products</Link>
-          </li>
-          <li className='flex items-center gap-1'>
-            <BsCart2 size={22} />
-            <Link to='/cart'>Cart</Link>
-          </li>
-          <li className='flex items-center gap-1'>
-            <MdLogin size={22} />
-            <Link to='/login'>Login</Link>
-          </li>
-          <li className='flex items-center gap-1'>
-            <MdAppRegistration size={22} />
-            <Link to='/signup'>Sign Up</Link>
-          </li>
-          <li className='flex items-center gap-1'>
-            <MdAdminPanelSettings size={22} />
-            <Link to='/admin'>Admin</Link>
-          </li>
-        </ul>
       </div>
 
-      {/* Mobile Menu */}
-      {menu && (
-        <ul className='absolute flex flex-col top-11 bg-[#9984ef] w-fit right-0 text-[18px] md:hidden lg:hidden rounded-b transition-all duration-500 ease-in-out z-40'>
-          <li className='hover:bg-[#cac4e4] p-2 px-4 flex items-center gap-2'>
-            <FaBoxOpen size={20} />
-            <Link to='/products'>Products</Link>
-          </li>
-          <li className='hover:bg-[#cec5f0] p-2 px-4 flex items-center gap-2'>
-            <BsCart2 size={20} />
-            <Link to='/cart'>Cart</Link>
-          </li>
-          <li className='hover:bg-[#634bc1] p-2 px-4 flex items-center gap-2'>
-            <MdLogin size={20} />
-            <Link to='/login'>Login</Link>
-          </li>
-          <li className='hover:bg-[#634bc1] p-2 px-4 flex items-center gap-2'>
-            <MdAppRegistration size={20} />
-            <Link to='/signup'>Sign Up</Link>
-          </li>
-          <li className='hover:bg-[#634bc1] p-2 px-4 flex items-center gap-2'>
-            <MdAdminPanelSettings size={22} />
-            <Link to='/admin'>Admin</Link>
-          </li>
-        </ul>
-      )}
-    </nav>
+      {/* Mobile menu */}
+      <div className={`md:hidden ${menuOpen ? 'block' : 'hidden'}`}>
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[#634bc1] shadow-xl rounded-b-lg">
+          <Link
+            to="/products"
+            className="flex items-center gap-3 text-white hover:bg-white/10 block px-3 py-3 rounded-md text-base font-medium transition-colors"
+          >
+            <BsBoxSeam />
+            Products
+          </Link>
+          <Link
+            to="/cart"
+            className="flex items-center gap-3 text-white hover:bg-white/10 block px-3 py-3 rounded-md text-base font-medium transition-colors"
+          >
+            <BsCart2 />
+            Cart
+          </Link>
+          <Link
+            to="/login"
+            className="flex items-center gap-3 text-white hover:bg-white/10 block px-3 py-3 rounded-md text-base font-medium transition-colors"
+          >
+            <MdLogin />
+            Login
+          </Link>
+          <Link
+            to="/admin"
+            className="flex items-center gap-3 text-white hover:bg-white/10 block px-3 py-3 rounded-md text-base font-medium transition-colors"
+          >
+            <MdAdminPanelSettings />
+            Admin
+          </Link>
+        </div>
+      </div>
+    </header>
   );
 };
 

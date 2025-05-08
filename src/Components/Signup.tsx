@@ -115,15 +115,15 @@ const Signup: React.FC = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://www.shopeasy.com.api/signup', {
+      const response = await fetch('https://www.shopeasy.com/user/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
+          username: formData.name,
           email: formData.email,
-          phone: formData.phone || undefined, // Only send if provided
+          // phone: formData.phone || undefined,
           password: formData.password
         }),
       });
