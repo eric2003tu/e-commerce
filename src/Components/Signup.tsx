@@ -4,6 +4,7 @@ import { HiOutlineMail, HiOutlineLockClosed, HiOutlinePhone } from 'react-icons/
 import Header from '../Small/Header';
 import Footer from '../Small/Footer';
 import Easy from '../assets/Easy.png'
+import { Link } from 'react-router-dom';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -402,9 +403,9 @@ const Signup: React.FC = () => {
               <div className="mt-6 text-center text-sm">
                 <p className="text-gray-600">
                   Already have an account?{' '}
-                  <a href="/login" className="font-medium text-[#634bc1] hover:text-[#5239ad]">
+                  <Link to="/login" className="font-medium text-[#634bc1] hover:text-[#5239ad]">
                     Log in
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
