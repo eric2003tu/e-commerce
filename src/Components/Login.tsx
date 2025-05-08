@@ -19,7 +19,7 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  const [otp,setOtp] = useState<boolean>(true)
+  const [otp,setOtp] = useState<boolean>(false)
 
   // Regular expressions for validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
