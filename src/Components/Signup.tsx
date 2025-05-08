@@ -5,6 +5,7 @@ import Header from '../Small/Header';
 import Footer from '../Small/Footer';
 import Easy from '../assets/Easy.png'
 import { Link } from 'react-router-dom';
+import Otp from './Otp';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +29,7 @@ const Signup: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [otp,setOtp] = useState<boolean>(false)
 
   // Regular expressions for validation
   const nameRegex = /^[a-zA-Z\s]{2,50}$/;
@@ -175,6 +177,8 @@ const Signup: React.FC = () => {
 
           {/* Right Column - Signup Form */}
           <div className="bg-white flex items-center justify-center p-8 sm:p-12 lg:p-16">
+            { otp ? <Otp/> 
+            :
             <div className="w-full max-w-md">
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
@@ -408,7 +412,7 @@ const Signup: React.FC = () => {
                   </Link>
                 </p>
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       </main>

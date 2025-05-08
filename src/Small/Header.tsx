@@ -33,7 +33,7 @@ const Header: React.FC = () => {
   return (
     <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#634bc1] shadow-lg' : 'bg-[#634bc1]/90 backdrop-blur-sm'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between ">
           {/* Logo and Brand */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center gap-3 group">
