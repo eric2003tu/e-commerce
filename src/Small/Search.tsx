@@ -17,7 +17,7 @@ const Search :React.FC= () => {
               placeholder="Find products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 rounded-l text-gray-700 focus:outline-none border border-gray-600"
+              className="w-full px-3 py-2 rounded-l text-gray-500 focus:outline-none border border-gray-500 "
             />
             <button
               type="submit"
