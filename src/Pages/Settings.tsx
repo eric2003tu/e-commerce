@@ -29,7 +29,7 @@ function AdminSettings() {
   };
 
   return (
-    <div className="p-6 md:p-10 w-full mx-auto">
+    <div className=" w-full mx-auto">
       <h2 className="text-3xl font-bold text-[#634bc1] mb-8">Admin Settings</h2>
       <form onSubmit={handleSubmit} className="space-y-8 bg-white p-8 shadow-xl rounded-2xl">
 

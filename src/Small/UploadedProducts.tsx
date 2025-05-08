@@ -33,7 +33,7 @@ const UploadedProducts: React.FC = () => {
   }, [])
 
   return (
-    <div id='products' className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full justify-items-center px-4'>
+    <div id='products' className='grid grid-cols-1  lg:grid-cols-4 gap-4 w-full justify-items-center px-4'>
       
       {warning && (
         <p className={`text-${warningColor}-600 text-center font-medium col-span-full`}>
