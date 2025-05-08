@@ -8,6 +8,7 @@ function AddProduct() {
     category: '',
     stock: '',
     image: '',
+    description: ''
   });
 
   const [error, setError] = useState('');
@@ -77,6 +78,8 @@ function AddProduct() {
           required
           className="lg:w-4/5 w-full p-2 border rounded"
         />
+        <textarea name="description" placeholder="Description..." value={formData.description} onChange={handleChange} required    className="lg:w-4/5 w-full p-2 border rounded"/>
+
         <input
           name="image"
           type="url"
