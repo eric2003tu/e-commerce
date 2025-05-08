@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import AddProduct from './AddProduct';
+import { IoClose } from "react-icons/io5";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -41,19 +42,24 @@ function Products() {
   }
 
   return (
-    <div className="py-6 w-full">
+    <div className={`py-6 w-ful relative`}>
       <div className="flex items-center justify-between mb-6 w-full">
         <h1 className="text-2xl font-bold">Products</h1>
         <button
-          className={`flex items-center ${!addProduct ? 'bg-[#634bc1]': 'bg-red-400'} text-white px-4 py-2 rounded-lg`} onClick={()=>{
+          className={`flex items-center bg-[#634bc1] text-white cursor-pointer  px-4 py-2 rounded-lg`} onClick={()=>{
             if (!addProduct) setAddProduct(true)
-            else setAddProduct(false)
           }}>
-          {!addProduct ? <FiPlus className="mr-2" /> : ''} {!addProduct ? 'Add Product' : 'Cancel'}
+          <FiPlus className="mr-2" />Add Product
         </button>
       </div>
-      { addProduct ? <AddProduct/>
-      :
+     <div className={addProduct ? 'flex flex-row max-w-fit h-fit self-end absolute lg:top-4 top-1 lg:ml-45  rounded-lg shadow-lg bg-white' : 'hidden'}>
+        
+        <AddProduct/>
+        <IoClose size={30} className='text-white hover:bg-red-700 transition-colors bg-red-400 duration-500 ease-in-out rounded-l-full cursor-pointer' onClick={()=>{
+          setAddProduct(false)
+        }}/>
+        </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto border">
           <thead className="bg-gray-100">
@@ -104,7 +110,7 @@ function Products() {
             )}
           </tbody>
         </table>
-      </div>}
+      </div>
     </div>
   );
 }

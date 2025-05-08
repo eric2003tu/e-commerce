@@ -36,29 +36,29 @@ function AddProduct() {
   }
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
+    <div className="p-6 max-w-xl mx-auto w-fit">
       <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
 
       {error && <p className="text-red-600 mb-2">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 ">
         <input
           name="name"
           placeholder="Product Name"
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="lg:w-4/5 w-full p-2 border rounded"
         />
         <input
           name="price"
-          type="number"
+          type="text"
           step="0.01"
           placeholder="Price"
           value={formData.price}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="lg:w-4/5 w-full p-2 border rounded"
         />
         <input
           name="category"
@@ -66,16 +66,16 @@ function AddProduct() {
           value={formData.category}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="lg:w-4/5 w-full p-2 border rounded"
         />
         <input
           name="stock"
-          type="number"
+          type="text"
           placeholder="Stock Quantity"
           value={formData.stock}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="lg:w-4/5 w-full p-2 border rounded"
         />
         <input
           name="image"
@@ -84,12 +84,12 @@ function AddProduct() {
           value={formData.image}
           onChange={handleChange}
           required
-          className="w-full p-2 border rounded"
+          className="lg:w-4/5 w-full p-2 border rounded"
         />
-
+        <br/>
         <button
           type="submit"
-          className="bg-[#634bc1] text-white px-4 py-2 rounded hover:bg-[#5239b1]"
+          className="bg-[#634bc1] text-white grid justify-self-center px-4 py-2 rounded hover:bg-[#5239b1]"
         >
           Add Product
         </button>

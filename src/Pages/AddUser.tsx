@@ -45,7 +45,7 @@ function AddUser() {
   }
 
   return (
-    <div className=" w-fulllg:max-w-md mx-auto bg-white p-6 rounded-lg shadow">
+    <div className="p-6 max-w-xl mx-auto w-fit">
       <h2 className="text-lg font-semibold mb-4">Add New User</h2>
 
       {success && <p className="text-green-600 mb-2">{success}</p>}
@@ -59,7 +59,7 @@ function AddUser() {
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full border px-4 py-2 rounded"
+          className="lg:w-4/5 w-full border px-4 py-2 rounded"
         />
         <input
           type="email"
@@ -68,7 +68,7 @@ function AddUser() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full border px-4 py-2 rounded"
+          className="lg:w-4/5 w-full border px-4 py-2 rounded"
         />
         <input
           type="text"
@@ -77,11 +77,30 @@ function AddUser() {
           value={formData.role}
           onChange={handleChange}
           required
-          className="w-full border px-4 py-2 rounded"
+          className="lg:w-4/5 w-full border px-4 py-2 rounded"
         />
+                <input
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="lg:w-4/5 w-full border px-4 py-2 rounded"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="lg:w-4/5 w-full border px-4 py-2 rounded"
+        />
+        <br/>
         <button
           type="submit"
-          className="w-full bg-[#634bc1] text-white py-2 rounded hover:bg-[#553bb5]"
+          className=" bg-[#634bc1] text-white grid justify-self-center p-4 py-2 rounded hover:bg-[#553bb5]"
         >
           Add User
         </button>

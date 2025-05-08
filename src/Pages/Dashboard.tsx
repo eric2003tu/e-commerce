@@ -177,7 +177,7 @@ function AdminDashboard() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
-        <div className="bg-white p-4 shadow-sm sticky top-0 z-10">
+        <div className="bg-white p-2 shadow-sm sticky top-0 z-10">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <h2 className="text-xl font-semibold capitalize">{activeTab}</h2>
             
@@ -233,9 +233,8 @@ function AdminDashboard() {
           )}
 
           {activeTab === 'users' && (
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            
               <Users />
-            </div>
           )}
 
           {activeTab === 'settings' && (
