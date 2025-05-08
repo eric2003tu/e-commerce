@@ -20,7 +20,7 @@ function Users() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 w-full">
         <h3 className = "font-semibold text-lg">User Management</h3>
         <button className={`flex items-center bg-[#634bc1] ${!addUser ? 'bg-[#634bc1]': 'bg-red-400'} text-white px-4 py-2 rounded-lg`} onClick={()=>{
             if(!addUser) setAddUser(true)
@@ -31,7 +31,7 @@ function Users() {
       </div>
       { addUser ? <AddUser/>
       :
-      <table className="w-full bg-white rounded-lg shadow-sm border text-sm flex">
+      <table className="min-w-full table-auto border">
         <thead className="bg-gray-50 text-gray-500">
           <tr>
             <th className="text-left p-3">Name</th>

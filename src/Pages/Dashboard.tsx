@@ -181,14 +181,14 @@ function AdminDashboard() {
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <h2 className="text-xl font-semibold capitalize">{activeTab}</h2>
             
-            {activeTab === 'products' && (
+            {  (
               <div className="relative w-full md:w-64">
                 <HiOutlineSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-[#634bc1] focus:border-[#634bc1]"
-                  placeholder="Search products..."
+                  placeholder={`Search ${activeTab}...`}
                 />
               </div>
             )}
@@ -227,7 +227,9 @@ function AdminDashboard() {
           )}
 
           {activeTab === 'products' && (
+            
             <Products products={filteredProducts} />
+            
           )}
 
           {activeTab === 'users' && (

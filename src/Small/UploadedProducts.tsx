@@ -51,13 +51,12 @@ const UploadedProducts: React.FC = () => {
             <img src={product.image} alt={`Image of ${product.title}`} className='object-contain h-40 w-full rounded-md mb-2' />
             <h1 className='text-lg font-bold'>{product.title}</h1>
             <p className='text-gray-600 mb-3'>{product.price}</p>
-            <Link 
-              to='/signup' 
-              className='block text-center text-white p-2 px-4 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors'
+            <button 
+              className='block text-center text-white p-2 px-4 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors duration-500 ease-in-out'
               onClick={() => localStorage.setItem('id', product.id)}
             >
               View More
-            </Link>
+            </button>
           </div>
         ))
       )}

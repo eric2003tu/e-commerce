@@ -22,8 +22,8 @@ const Home:React.FC = () => {
 <strong className='text-gray-600'> Join us today </strong>and enjoy an exclusive shopping experience tailored to your needs.
     </p>
     <div className='justify-items-center grid grid-cols-2 gap-2.5'>
-      <Link to ='/signup' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md'>Sign Up Now</Link>
-      <Link to='/products' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md'>Start Shopping</Link>
+      <Link to ='/signup' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md bg-[#634bc1] rounded-md hover:bg-[#756a9f] transition-colors duration-1000 ease-in-out'>Sign Up Now</Link>
+      <Link to='/products' className='text-center text-gray-100 p-2 px-8  bg-[#634bc1] rounded-md hover:bg-[#756a9f] transition-colors duration-1000 ease-in-out'>Start Shopping</Link>
     </div>
     <Search/>
   </div>
@@ -64,7 +64,7 @@ const Home:React.FC = () => {
   Shoes
   </h1>
   <p>34$</p>
-  <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md'>Buy Now</Link>
+  <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md  hover:bg-[#756a9f] transition-colors duration-1000 ease-in-out'>Buy Now</Link>
   </div>
   <div className='grid grid-cols-1 bg-white justify-items-center rounded-lg shadow-md p-4'>
     <img src={bag} alt="bag" className='object-contain rounded-md' />
@@ -72,7 +72,7 @@ const Home:React.FC = () => {
   armbag
   </h1>
   <p>54$</p>
-  <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md'>Buy Now</Link>
+  <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md hover:bg-[#756a9f] transition-colors duration-1000 ease-in-out'>Buy Now</Link>
   </div>
   <div className='grid grid-cols-1 bg-white justify-items-center rounded-lg shadow-md p-4'>
     <img src={watch} alt="watch" className='object-contain rounded-md' />
@@ -80,7 +80,7 @@ const Home:React.FC = () => {
   Smart watch
   </h1>
   <p>134$</p>
-  <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md'>Buy Now</Link>
+  <Link to ='/signup' className='text-center text-gray-100 p-2 px-4 w-1/2  bg-[#634bc1] rounded-md hover:bg-[#756a9f] transition-colors duration-1000 ease-in-out'>Buy Now</Link>
   </div>
   </div>
 <Footer/>
