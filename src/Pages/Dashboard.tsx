@@ -34,12 +34,21 @@ function AdminDashboard() {
     // Fetch the statistics data
     const fetchStats = async () => {
       try {
-        const response = await fetch('/api/stats');
-        const data = await response.json();
+        // Fetch users data
+        const usersResponse = await fetch('https://e-commerce-back-xy6s.onrender.com/api/users');
+        const usersData = await usersResponse.json();
+        
+        // Fetch products data
+        const productsResponse = await fetch('https://e-commerce-back-xy6s.onrender.com/api/products');
+        const productsData = await productsResponse.json();
+        
+        // Count active users (assuming active users are those with isActive: true)
+        const activeUsersCount = usersData.filter(user => user.isActive).length;
+        
         setStats([
-          { title: 'Total Products', value: data.totalProducts, icon: <FiShoppingBag /> },
-          { title: 'Active Users', value: data.activeUsers, icon: <FiUsers /> },
-          { title: 'Monthly Sales', value: `$${data.monthlySales.toLocaleString()}`, icon: <FiBarChart2 /> },
+          { title: 'Total Products', value: productsData.length, icon: <FiShoppingBag /> },
+          { title: 'Active Users', value: activeUsersCount, icon: <FiUsers /> },
+          { title: 'Monthly Sales', value: '$0', icon: <FiBarChart2 /> }, // Placeholder for sales data
         ]);
       } catch (error) {
         console.error('Error fetching statistics:', error);
@@ -227,14 +236,11 @@ function AdminDashboard() {
           )}
 
           {activeTab === 'products' && (
-            
             <Products products={filteredProducts} />
-            
           )}
 
           {activeTab === 'users' && (
-            
-              <Users />
+            <Users />
           )}
 
           {activeTab === 'settings' && (

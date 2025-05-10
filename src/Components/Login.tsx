@@ -15,7 +15,7 @@ const Login: React.FC = () => {
     email: '',
     password: '',
     form: ''
-  });
+  })
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -84,11 +84,12 @@ const Login: React.FC = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://www.shopeasy.com/user/login', {
+      const response = await fetch('https://e-commerce-back-xy6s.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           email: formData.email,
           password: formData.password

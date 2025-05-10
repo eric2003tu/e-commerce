@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function AddProduct() {
+const AddProduct :React.FC =()=> {
   const [formData, setFormData] = useState({
     name: '',
     price: '',
     category: '',
     stock: '',
-    image: '',
+    imageUrl: '',
     description: ''
   });
 
@@ -21,7 +21,7 @@ function AddProduct() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch('https://shopEasy.com/api/products', {
+    fetch('https://e-commerce-back-xy6s.onrender.com/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -56,7 +56,7 @@ function AddProduct() {
           type="text"
           step="0.01"
           placeholder="Price"
-          value={formData.price}
+          value={parseInt( formData.price)}
           onChange={handleChange}
           required
           className="lg:w-4/5 w-full p-2 border rounded"
@@ -73,7 +73,7 @@ function AddProduct() {
           name="stock"
           type="text"
           placeholder="Stock Quantity"
-          value={formData.stock}
+          value={parseInt(formData.stock)}
           onChange={handleChange}
           required
           className="lg:w-4/5 w-full p-2 border rounded"
@@ -84,7 +84,7 @@ function AddProduct() {
           name="image"
           type="url"
           placeholder="Image URL"
-          value={formData.image}
+          value={formData.imageUrl}
           onChange={handleChange}
           required
           className="lg:w-4/5 w-full p-2 border rounded"

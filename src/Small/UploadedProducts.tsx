@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 interface Product {
   id: string,
-  title: string,
+  name: string,
+  description: string,
   price: string,
-  image: string
+  imageUrl: string,
+  category: string,
+  stock: number
 }
 
 const UploadedProducts: React.FC = () => {
@@ -16,7 +18,7 @@ const UploadedProducts: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true)
-    fetch('https://www.products.com/api/products')
+    fetch('https://e-commerce-back-xy6s.onrender.com/api/products')
       .then((response) => {
         return response.json()  // ✅ Return response.json()
       })
@@ -48,9 +50,10 @@ const UploadedProducts: React.FC = () => {
       ) : (
         products.map((product) => (
           <div key={product.id} className='bg-white rounded-lg shadow-md p-4 w-full max-w-xs'>
-            <img src={product.image} alt={`Image of ${product.title}`} className='object-contain h-40 w-full rounded-md mb-2' />
-            <h1 className='text-lg font-bold'>{product.title}</h1>
+            <img src={`${product.imageUrl}`} alt={`Image of ${product.name}`} className='object-contain h-40 w-full rounded-md mb-2' />
+            <h1 className='text-lg font-bold'>{product.name}</h1>
             <p className='text-gray-600 mb-3'>{product.price}</p>
+            <p className='text-gray-600 mb-3'> Stock {product.stock}</p>
             <button 
               className='block text-center text-white p-2 px-4 bg-[#634bc1] rounded-md hover:bg-[#5340a0] transition-colors duration-500 ease-in-out'
               onClick={() => localStorage.setItem('id', product.id)}

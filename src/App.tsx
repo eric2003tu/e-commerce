@@ -8,6 +8,7 @@ import Payment from './Components/Payment';
 import Login from './Components/Login';
 import Signup from './Components/Signup'
 import Admin from './Pages/Admin';
+import UserDashboard from './Components/UserDashboard';
 // import GoogleTranslate from "./Components/GoogleTranslate";
 
 const App:React.FC = () => {
@@ -21,6 +22,7 @@ const App:React.FC = () => {
         <Route path = '/payment' element = {<Payment />}/>
         <Route path = '/login' element = {<Login />}/>
         <Route path = '/signup' element = {<Signup />}/>
+        <Route path='/user' element={<UserDashboard/>}/>
         <Route path= '/admin/*' element = {<Admin />}/>
       </Routes>
     </Router>

@@ -4,8 +4,7 @@ import logo from '../assets/logo.jpg';
 import { CiMenuBurger, CiSearch } from "react-icons/ci";
 import { BsCart2, BsPerson, BsBoxSeam } from "react-icons/bs";
 import { MdLogin, MdAppRegistration, MdAdminPanelSettings } from "react-icons/md";
-import { FaRegUserCircle } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
+import { FaRegUser } from "react-icons/fa";
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -78,6 +77,13 @@ const Header: React.FC = () => {
               <MdAdminPanelSettings className="text-lg" />
               Admin
             </Link>
+            <Link 
+              to="/user" 
+              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
+            >
+              <FaRegUser className="text-lg" />
+              User
+            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -124,6 +130,13 @@ const Header: React.FC = () => {
             <MdAdminPanelSettings />
             Admin
           </Link>
+          <Link 
+              to="/user" 
+              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
+            >
+              <FaRegUser className="text-lg" />
+              User
+            </Link>
         </div>
       </div>
     </header>
