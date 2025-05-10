@@ -219,18 +219,9 @@ const handleSubmit = (e: React.FormEvent) => {
     })
   })
   .then((response) => {
-  if (!response.ok) {
-    // Try parsing as JSON, fallback to text
-    return response.json()
-      .then(err => {
-        throw new Error(err.message || 'Invalid data');
-      })
-      .catch(() => {
-        return response.text().then(text => {
-          throw new Error('Server error: ' + text.slice(0, 100));
-        });
-      });
-  }
+    if (!response.ok) {
+      throw new Error('Invalid data')
+    }
     return response.json();
   })
   .then(data => {
