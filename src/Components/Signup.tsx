@@ -165,87 +165,90 @@ const Signup: React.FC = () => {
     setIsFormValid(validateForm());
   }, [formData, currentStep]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate all fields for the current step
-    let newErrors: Partial<FormErrors> = {};
-    const fieldsToValidate = currentStep === 1 
-      ? ['name', 'email', 'phone', 'password', 'confirmPassword'] 
-      : ['address', 'street', 'city', 'state', 'zipcode', 'country'];
-    
-    fieldsToValidate.forEach(field => {
-      newErrors[field as keyof FormErrors] = validateField(
-        field as keyof FormData, 
-        formData[field as keyof FormData]
-      );
-    });
-    
-    setErrors(prev => ({ ...prev, ...newErrors, form: '' }));
-    
-    // Check if any errors exist
-    const hasErrors = Object.values(newErrors).some(error => error !== '');
-    if (hasErrors || !isFormValid) {
-      setErrors(prev => ({ ...prev, form: 'Please fix all errors before continuing' }));
-      return;
-    }
-    
-    if (currentStep === 1) {
-      // Move to address step
-      setCurrentStep(2);
-      window.scrollTo(0, 0);
-      return;
-    }
-    
-    // Final submission
-    setIsLoading(true);
-    
-    try {
-      const response = await fetch('https://e-commerce-back-xy6s.onrender.com/api/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: formData.name,
-          email: formData.email,
-          phone: formData.phone || undefined,
-          password: formData.password,
-          address: {
-            line1: formData.address,
-            street: formData.street,
-            city: formData.city,
-            state: formData.state,
-            postalCode: formData.zipcode,
-            country: formData.country
-          }
-        }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Signup failed');
-      }
-      
-      const data = await response.json();
-      console.log('Signup successful:', data);
-      setOtp(true); // Show OTP verification
-      // Alternatively: navigate('/login');
-      
-    } catch (error) {
-      console.error('Signup error:', error);
-      setErrors(prev => ({ 
-        ...prev, 
-        form: error instanceof Error ? error.message : 'An unexpected error occurred' 
-      }));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
 
-  if (otp) {
-    return <Otp email={formData.email} />;
+  // Validate fields
+  let newErrors: Partial<FormErrors> = {};
+  const fieldsToValidate = currentStep === 1 
+    ? ['name', 'email', 'phone', 'password', 'confirmPassword'] 
+    : ['address', 'street', 'city', 'state', 'zipcode', 'country'];
+
+  fieldsToValidate.forEach(field => {
+    newErrors[field as keyof FormErrors] = validateField(
+      field as keyof FormData,
+      formData[field as keyof FormData]
+    );
+  });
+
+  setErrors(prev => ({ ...prev, ...newErrors, form: '' }));
+
+  const hasErrors = Object.values(newErrors).some(error => error !== '');
+  if (hasErrors || !isFormValid) {
+    setErrors(prev => ({ ...prev, form: 'Please fix all errors before continuing' }));
+    return;
   }
+
+  if (currentStep === 1) {
+    setCurrentStep(2);
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  // Final submission
+  setIsLoading(true);
+
+  fetch('https://e-commerce-back-xy6s.onrender.com/api/users/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: formData.name,
+      email: formData.email,
+      phone: formData.phone || undefined,
+      password: formData.password,
+      address: {
+        line1: formData.address,
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        postalCode: formData.zipcode,
+        country: formData.country
+      }
+    })
+  })
+  .then((response) => {
+  if (!response.ok) {
+    // Try parsing as JSON, fallback to text
+    return response.json()
+      .then(err => {
+        throw new Error(err.message || 'Invalid data');
+      })
+      .catch(() => {
+        return response.text().then(text => {
+          throw new Error('Server error: ' + text.slice(0, 100));
+        });
+      });
+  }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Signup successful:', data);
+    setOtp(true); // Move to OTP
+  })
+  .catch(error => {
+    console.error('Signup error:', error);
+    setErrors(prev => ({
+      ...prev,
+      form: error.message || 'An unexpected error occurred'
+    }));
+  })
+  .finally(() => {
+    setIsLoading(false);
+  });
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
