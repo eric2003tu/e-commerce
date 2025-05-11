@@ -13,7 +13,7 @@ interface FormData {
   phone: string;
   password: string;
   confirmPassword: string;
-  address: string;
+  line1: string;
   street: string;
   city: string;
   state: string;
@@ -27,7 +27,7 @@ interface FormErrors {
   phone: string;
   password: string;
   confirmPassword: string;
-  address: string;
+  line1: string;
   street: string;
   city: string;
   state: string;
@@ -44,7 +44,7 @@ const Signup: React.FC = () => {
     phone: '',
     password: '',
     confirmPassword: '',
-    address: '',
+    line1: '',
     street: '',
     city: '',
     state: '',
@@ -58,7 +58,7 @@ const Signup: React.FC = () => {
     phone: '',
     password: '',
     confirmPassword: '',
-    address: '',
+    line1: '',
     street: '',
     city: '',
     state: '',
@@ -105,8 +105,8 @@ const Signup: React.FC = () => {
       case 'confirmPassword':
         if (value !== formData.password) return 'Passwords do not match';
         break;
-      case 'address':
-        if (!value.trim()) return 'Address is required';
+      case 'line1':
+        if (!value.trim()) return 'line1 is required';
         break;
       case 'street':
         if (!value.trim()) return 'Street is required';
@@ -152,7 +152,7 @@ const Signup: React.FC = () => {
       } else {
         // Validate address information step
         return (
-          formData.address.trim() !== '' &&
+          formData.line1.trim() !== '' &&
           formData.street.trim() !== '' &&
           formData.city.trim() !== '' &&
           formData.state.trim() !== '' &&
@@ -198,36 +198,45 @@ const handleSubmit = (e: React.FormEvent) => {
   // Final submission
   setIsLoading(true);
 
-  fetch('https://e-commerce-back-xy6s.onrender.com/api/users/register', {
+  fetch('https://e-commerce-back-xy6s.onrender.com/api/v1/users/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      username: formData.name,
-      email: formData.email,
-      phone: formData.phone || undefined,
-      password: formData.password,
-      address: {
-        line1: formData.address,
-        street: formData.street,
-        city: formData.city,
-        state: formData.state,
-        postalCode: formData.zipcode,
-        country: formData.country
-      }
-    })
+body: JSON.stringify({
+  name: formData.name,  // Changed from username to name
+  email: formData.email,
+  phone: formData.phone || undefined,
+  password: formData.password,
+  address: {
+    line1: formData.line1,
+    street: formData.street,
+    city: formData.city,
+    state: formData.state,
+    zipCode: formData.zipcode,  // Changed from postalCode to zipCode
+    country: formData.country
+  }
+})
   })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Invalid data')
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Signup successful:', data);
-    setOtp(true); // Move to OTP
-  })
+.then((response) => {
+  if (!response.ok) {
+    // Try to get error details from response
+    return response.json().then(errData => {
+      throw new Error(errData.message || 'Registration failed');
+    }).catch(() => {
+      throw new Error(`Request failed with status ${response.status}`);
+    });
+  }
+  return response.json();
+})
+.then(data => {
+  console.log('Signup successful:', data);
+  // Store user token if returned
+  if (data.token) {
+    localStorage.setItem('authToken', data.token);
+  }
+  setOtp(true);
+})
   .catch(error => {
     console.error('Signup error:', error);
     setErrors(prev => ({
@@ -455,7 +464,7 @@ const handleSubmit = (e: React.FormEvent) => {
                   <>
                     {/* Address Information Step */}
                     <div>
-                      <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="line1" className="block text-sm font-medium text-gray-700 mb-1">
                         Address Line 1
                       </label>
                       <div className="relative">
@@ -464,20 +473,20 @@ const handleSubmit = (e: React.FormEvent) => {
                         </div>
                         <input
                           id="address"
-                          name="address"
+                          name="line1"
                           type="text"
                           required
-                          value={formData.address}
+                          value={formData.line1}
                           onChange={handleChange}
                           onBlur={(e) => {
-                            const error = validateField('address', e.target.value);
+                            const error = validateField('line1', e.target.value);
                             setErrors(prev => ({ ...prev, address: error }));
                           }}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.address ? 'border-red-300' : 'border-gray-300'} rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#634bc1] focus:border-[#634bc1]`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${errors.line1 ? 'border-red-300' : 'border-gray-300'} rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#634bc1] focus:border-[#634bc1]`}
                           placeholder="123 Main St"
                         />
                       </div>
-                      {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
+                      {errors.line1 && <p className="mt-1 text-sm text-red-600">{errors.line1}</p>}
                     </div>
 
                     <div>
