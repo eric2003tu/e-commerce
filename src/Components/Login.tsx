@@ -4,9 +4,11 @@ import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import Header from '../Small/Header';
 import Footer from '../Small/Footer';
 import Otp from './Otp';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const Login: React.FC = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -107,7 +109,8 @@ const api = isLocal
       
       const data = await response.json();
       console.log('Login successful:', data);
-      setOtp(true)
+      navigate('/user')
+      //setOtp(true)
       // Handle successful login (redirect, store token, etc.)
       
     } catch (error) {

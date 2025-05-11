@@ -77,13 +77,6 @@ const Header: React.FC = () => {
               <MdAdminPanelSettings className="text-lg" />
               Admin
             </Link>
-            <Link 
-              to="/user" 
-              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
-            >
-              <FaRegUser className="text-lg" />
-              User
-            </Link>
           </nav>
 
           {/* Mobile menu button */}
@@ -130,13 +123,6 @@ const Header: React.FC = () => {
             <MdAdminPanelSettings />
             Admin
           </Link>
-          <Link 
-              to="/user" 
-              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
-            >
-              <FaRegUser className="text-lg" />
-              User
-            </Link>
         </div>
       </div>
     </header>
