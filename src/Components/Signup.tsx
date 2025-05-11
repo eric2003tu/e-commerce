@@ -194,11 +194,15 @@ const handleSubmit = (e: React.FormEvent) => {
     window.scrollTo(0, 0);
     return;
   }
+  const isLocal = window.location.hostname === 'localhost';
+const api = isLocal
+  ? 'http://localhost:5000/api/v1/users/signup'
+  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/signup';
 
   // Final submission
   setIsLoading(true);
 
-  fetch('https://e-commerce-back-xy6s.onrender.com/api/v1/users/signup', {
+  fetch(`${api}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

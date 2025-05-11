@@ -80,11 +80,15 @@ const Login: React.FC = () => {
       setErrors(prev => ({ ...prev, form: 'Please fix all errors before submitting' }));
       return;
     }
+    const isLocal = window.location.hostname === 'localhost';
+const api = isLocal
+  ? 'http://localhost:5000/api/v1/users/login'
+  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/login';
     
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://e-commerce-back-xy6s.onrender.com/api/v1/users/login', {
+      const response = await fetch(`${api}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
