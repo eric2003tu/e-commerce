@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiShoppingBag, FiBarChart2, FiSettings, FiMenu } from 'react-icons/fi';
 import { HiOutlineLogout, HiOutlineSearch } from 'react-icons/hi';
-import { Link } from 'react-router-dom';
+import { Link, Navigate} from 'react-router-dom';
 import Footer from '../Small/Footer';
-import Products from './Products';
 import AdminSettings from '../Pages/Settings';
 import UploadedProducts from '../Small/UploadedProducts';
+import { UseLogout } from './UseLogout';
 
 const UserDashboard :React.FC=()=> {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -15,8 +15,11 @@ const UserDashboard :React.FC=()=> {
     { title: 'Active Users', value: 0, icon: <FiUsers /> },
     { title: 'Monthly Sales', value: '$0', icon: <FiBarChart2 /> },
   ]);
+  const [myName,setMyName] = useState<string>('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
+  const handleLogout = UseLogout()
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +33,19 @@ const UserDashboard :React.FC=()=> {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    try {
+      const parsedData = JSON.parse(userData);
+      if (parsedData?.user?.name) {
+        setMyName(parsedData.user.name); // This will set "Aliance"
+      }
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+    }
+  }
+}, []);5
   useEffect(() => {
     // Fetch the statistics data
     const fetchStats = async () => {
@@ -78,8 +94,8 @@ const UserDashboard :React.FC=()=> {
         {/* Mobile Header */}
         <div className="lg:hidden bg-[#433d61] text-white p-4 flex justify-between items-center">
           <div>
-            <h1 className="text-xl font-bold">User<span className="text-[#ffdc89]">Dashboard</span></h1>
-            <p className="text-xs text-gray-300">User Management</p>
+            <h1 className="text-xl font-bold">You are in <span className="text-[#ffdc89]">{myName}</span></h1>
+            <p className="text-xs text-gray-300">{myName}</p>
           </div>
           <button 
             onClick={toggleMobileMenu}
@@ -99,7 +115,7 @@ const UserDashboard :React.FC=()=> {
             <div className="absolute left-0 top-0 h-full w-64 bg-[#433d61] text-white p-4 flex flex-col z-10">
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h1 className="text-xl font-bold">User<span className="text-[#ffdc89]">Dashboard</span></h1>
+                  <h1 className="text-xl font-bold">You are in <span className="text-[#ffdc89]">{myName}</span></h1>
                   <p className="text-xs text-gray-300">User Management</p>
                 </div>
                 <button 
@@ -129,12 +145,11 @@ const UserDashboard :React.FC=()=> {
                 ))}
               </div>
 
-              <Link 
-                to="/" 
-                className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
-              >
+              <button
+                className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm cursor-pointer"
+               onClick={handleLogout}>
                 <HiOutlineLogout className="mr-3" /> Logout
-              </Link>
+              </button>
             </div>
           </div>
         )}
@@ -142,8 +157,8 @@ const UserDashboard :React.FC=()=> {
         {/* Desktop Sidebar */}
         <div className="hidden lg:flex w-64 bg-[#433d61] text-white p-4 flex-col">
           <div className="mb-6">
-            <h1 className="text-xl font-bold">User<span className="text-[#ffdc89]">Dashboard</span></h1>
-            <p className="text-xs text-gray-300">User Management</p>
+            <h1 className="text-xl font-bold">Welcome <span className="text-[#ffdc89]">{myName}</span></h1>
+            <p className="text-xs text-gray-300">You are Now in</p>
           </div>
 
           <div className="flex flex-col space-y-2 flex-1">

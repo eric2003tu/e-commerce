@@ -18,6 +18,7 @@ const Login: React.FC = () => {
     password: '',
     form: ''
   })
+  const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
@@ -109,7 +110,12 @@ const api = isLocal
       
       const data = await response.json();
       console.log('Login successful:', data);
-      navigate('/user')
+      localStorage.setItem('user',JSON.stringify(data))
+      setSuccessMessage('Logged in successfully');
+      setTimeout(()=>{
+        navigate('/user')
+        setSuccessMessage('');
+      },5000)
       //setOtp(true)
       // Handle successful login (redirect, store token, etc.)
       
@@ -160,11 +166,9 @@ const api = isLocal
                 <p className="text-gray-600">Enter your details to access your account</p>
               </div>
 
-              {errors.form && (
-                <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
-                  {errors.form}
+                <div className={`mb-4 p-3 ${!successMessage ? 'bg-red-50 text-red-700': 'text-blue-500'} rounded-lg text-md`}>
+                  {!successMessage ? errors.form : successMessage }
                 </div>
-              )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
