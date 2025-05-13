@@ -10,6 +10,7 @@ import Signup from './Components/Signup'
 import Admin from './Pages/Admin';
 import UserDashboard from './Components/UserDashboard';
 import ProtectedUser from './Components/ProtectedUser';
+import AdminRoute from './Small/AdminRoute';
 // import GoogleTranslate from "./Components/GoogleTranslate";
 
 const App:React.FC = () => {

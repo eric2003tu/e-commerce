@@ -4,10 +4,12 @@ import { HiOutlineLogout, HiOutlineSearch } from 'react-icons/hi';
 import Users from './Users';
 import Products from './AdminProducts';
 import Settings from './Settings';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../Small/Footer';
+import { UseLogout } from '../Components/UseLogout';
 
 function AdminDashboard() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('dashboard');
   const [search, setSearch] = useState('');
   const [stats, setStats] = useState([
@@ -17,6 +19,7 @@ function AdminDashboard() {
   ]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,6 +32,33 @@ function AdminDashboard() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+     const adminLogout=()=> {
+        const isLocal = window.location.hostname === 'localhost';
+const api = isLocal
+  ? 'http://localhost:5000/api/v1/users/admin-logout'
+  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/admin-logout';
+    fetch(`${api}`, {
+      method: 'POST',
+      credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Optionally clear frontend storage if used
+        // localStorage.removeItem('token');
+        // sessionStorage.clear();
+  
+        // Redirect to login page or show a message
+        navigate('/login') // adjust path as needed
+      } else {
+        console.error('Logout failed:', data.message);
+      }
+    })
+    .catch(err => {
+      console.error('Error logging out:', err);
+    });
+  }
 
   useEffect(() => {
     // Fetch the statistics data
@@ -139,12 +169,11 @@ function AdminDashboard() {
               ))}
             </div>
 
-            <Link 
-              to="/" 
+            <button 
               className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
-            >
+            onClick={adminLogout}>
               <HiOutlineLogout className="mr-3" /> Logout
-            </Link>
+            </button>
           </div>
         </div>
       )}

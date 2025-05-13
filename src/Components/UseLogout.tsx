@@ -7,6 +7,7 @@ export const UseLogout = () => {
   const handleLogout = useCallback(() => {
     // Clear user data from storage
     localStorage.removeItem('user');
+     document.cookie = 'token=; Max-Age=0; path=/;'; // 🔥 Clear token cookie
     localStorage.removeItem('authToken'); // Optional: Remove token if used
     
     // Redirect to login and prevent going back

@@ -23,6 +23,7 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [otp,setOtp] = useState<boolean>(false)
+  const [who,setWho] = useState<string>('user')
 
   // Regular expressions for validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,6 +48,7 @@ const Login: React.FC = () => {
     
     return error;
   };
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -83,10 +85,14 @@ const Login: React.FC = () => {
       setErrors(prev => ({ ...prev, form: 'Please fix all errors before submitting' }));
       return;
     }
-    const isLocal = window.location.hostname === 'localhost';
-const api = isLocal
-  ? 'http://localhost:5000/api/v1/users/login'
-  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/login';
+  const isLocal = window.location.hostname === 'localhost';
+
+  const apiBase = isLocal
+  ? 'http://localhost:5000/api/v1/users'
+  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users';
+
+  const api = `${apiBase}/${who === 'user' ? 'login' : 'admin-login'}`;
+
     
     setIsLoading(true);
     
@@ -113,7 +119,11 @@ const api = isLocal
       localStorage.setItem('user',JSON.stringify(data))
       setSuccessMessage('Logged in successfully');
       setTimeout(()=>{
-        navigate('/user')
+      if (who === 'user') {
+      navigate('/user');
+    } else if (who === 'admin') {
+      navigate('/admin');
+    }
         setSuccessMessage('');
       },5000)
       //setOtp(true)
@@ -234,7 +244,20 @@ const api = isLocal
                     </button>
                   </div>
                   {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+
                 </div>
+                  <select
+                   name="role"
+                   value={who}
+                   onChange={(e) => setWho(e.target.value)}
+                   className={`block w-full pl-10 pr-3 py-3 border ${errors.role ? 'border-red-300' : 'border-gray-300'} rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#634bc1] focus:border-[#634bc1]`}
+                 >
+                   <option value="" disabled>
+                     Select role please
+                   </option>
+                   <option value="user">User</option>
+                   <option value="admin">Admin</option>
+                 </select>
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
