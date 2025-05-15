@@ -33,32 +33,39 @@ function AdminDashboard() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-     const adminLogout=()=> {
-        const isLocal = window.location.hostname === 'localhost';
-const api = isLocal
-  ? 'http://localhost:5000/api/v1/users/admin-logout'
-  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/admin-logout';
-    fetch(`${api}`, {
-      method: 'POST',
-      credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Optionally clear frontend storage if used
-        // localStorage.removeItem('token');
-        // sessionStorage.clear();
+  useEffect(()=>{
+    const currentUser = localStorage.getItem('user')
+    if(!currentUser)  {
+      navigate('/login', { replace: true });
+    }
+  },[navigate])
+
+//      const adminLogout=()=> {
+//         const isLocal = window.location.hostname === 'localhost';
+// const api = isLocal
+//   ? 'http://localhost:5000/api/v1/users/admin-logout'
+//   : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/admin-logout';
+//     fetch(`${api}`, {
+//       method: 'POST',
+//       credentials: 'include'
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       if (data.success) {
+//         // Optionally clear frontend storage if used
+//         // localStorage.removeItem('token');
+//         // sessionStorage.clear();
   
-        // Redirect to login page or show a message
-        navigate('/login') // adjust path as needed
-      } else {
-        console.error('Logout failed:', data.message);
-      }
-    })
-    .catch(err => {
-      console.error('Error logging out:', err);
-    });
-  }
+//         // Redirect to login page or show a message
+//         navigate('/login') // adjust path as needed
+//       } else {
+//         console.error('Logout failed:', data.message);
+//       }
+//     })
+//     .catch(err => {
+//       console.error('Error logging out:', err);
+//     });
+//   }
 
   useEffect(() => {
     // Fetch the statistics data
@@ -87,6 +94,8 @@ const api = isLocal
 
     fetchStats();
   }, []);
+
+  const handleLogout = UseLogout()
 
   const allProducts = [
     { id: 1, name: 'Wireless Headphones', category: 'Electronics', price: 99.99, stock: 45 },
@@ -171,7 +180,7 @@ const api = isLocal
 
             <button 
               className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
-            onClick={adminLogout}>
+            onClick={handleLogout}>
               <HiOutlineLogout className="mr-3" /> Logout
             </button>
           </div>
@@ -205,12 +214,12 @@ const api = isLocal
           ))}
         </div>
 
-        <Link 
-          to="/" 
+        <button
+          onClick={handleLogout}
           className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
         >
           <HiOutlineLogout className="mr-3" /> Logout
-        </Link>
+        </button>
       </div>
 
       {/* Main Content */}

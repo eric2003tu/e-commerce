@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiShoppingBag, FiBarChart2, FiSettings, FiMenu } from 'react-icons/fi';
 import { HiOutlineLogout, HiOutlineSearch } from 'react-icons/hi';
-import { Link, Navigate} from 'react-router-dom';
+import { Link, Navigate, useNavigate} from 'react-router-dom';
 import Footer from '../Small/Footer';
 import AdminSettings from '../Pages/Settings';
 import UploadedProducts from '../Small/UploadedProducts';
 import { UseLogout } from './UseLogout';
 
 const UserDashboard :React.FC=()=> {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('dashboard');
   const [search, setSearch] = useState('');
   const [stats, setStats] = useState([
@@ -45,7 +46,13 @@ const UserDashboard :React.FC=()=> {
       console.error('Error parsing user data:', error);
     }
   }
-}, []);5
+}, []);
+useEffect(()=>{
+  const currentUser = localStorage.getItem('user')
+  if(!currentUser)  {
+    navigate('/login', { replace: true });
+  }
+},[navigate])
   useEffect(() => {
     // Fetch the statistics data
     const fetchStats = async () => {
@@ -180,12 +187,12 @@ const UserDashboard :React.FC=()=> {
             ))}
           </div>
 
-          <Link 
-            to="/" 
+          <button
+            onClick={handleLogout} 
             className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
           >
             <HiOutlineLogout className="mr-3" /> Logout
-          </Link>
+          </button>
         </div>
 
         {/* Main Content */}

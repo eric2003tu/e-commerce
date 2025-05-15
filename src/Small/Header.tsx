@@ -31,7 +31,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#634bc1] shadow-lg' : 'bg-[#634bc1]/90 backdrop-blur-sm'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-4">
         <div className="flex items-center justify-between ">
           {/* Logo and Brand */}
           <div className="flex-shrink-0 flex items-center">
@@ -69,13 +69,6 @@ const Header: React.FC = () => {
             >
               <MdLogin className="text-lg" />
               Login
-            </Link>
-            <Link 
-              to="/admin" 
-              className="px-3 py-2 rounded-md text-sm lg:text-base font-medium text-white hover:bg-white/10 flex items-center gap-2 transition-colors"
-            >
-              <MdAdminPanelSettings className="text-lg" />
-              Admin
             </Link>
           </nav>
 
@@ -115,13 +108,6 @@ const Header: React.FC = () => {
           >
             <MdLogin />
             Login
-          </Link>
-          <Link
-            to="/admin"
-            className="flex items-center gap-3 text-white hover:bg-white/10 block px-3 py-3 rounded-md text-base font-medium transition-colors"
-          >
-            <MdAdminPanelSettings />
-            Admin
           </Link>
         </div>
       </div>

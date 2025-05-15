@@ -125,7 +125,7 @@ const Login: React.FC = () => {
       navigate('/admin');
     }
         setSuccessMessage('');
-      },5000)
+      },2000)
       //setOtp(true)
       // Handle successful login (redirect, store token, etc.)
       
