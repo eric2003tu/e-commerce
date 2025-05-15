@@ -11,32 +11,30 @@ const Users: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [addUserModal, setAddUserModal] = useState(false);
 
-useEffect(() => {
-const fetchUsers = async () => {
-  try {
-    const isLocal = window.location.hostname === 'localhost';
-    const apiUrl = isLocal
-      ? 'http://localhost:5000/api/v1/users'
-      : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users';
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const isLocal = window.location.hostname === 'localhost';
+        const apiUrl = isLocal
+          ? 'http://localhost:5000/api/v1/users'
+          : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users';
 
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'// ✅ Important for sending cookies
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Important for sending cookies
+        });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch users');
+          throw new Error(`Error: ${response.status}`);
         }
 
         const data = await response.json();
-        setUsers(data.data || data); // Handle both formats
+        const fetchedUsers = data.data || data; // Handle both formats
+        setUsers(fetchedUsers);
+        localStorage.setItem('allUsers', String(fetchedUsers.length)); // Store after fetch
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch users');
         console.error('Error fetching users:', err);
@@ -162,8 +160,8 @@ const fetchUsers = async () => {
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.phone || '-'}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                      {[user.city, user.state, user.country].filter(Boolean).join(', ') || '-'}
-                    </td>
+                      {user.address ? `${user.address.line1}, ${user.address.city}, ${user.address.state}` : '-'}
+                      </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                         ${user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'}`}>

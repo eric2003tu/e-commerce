@@ -72,6 +72,7 @@ function AdminDashboard() {
     const fetchStats = async () => {
       try {
         // Fetch users data
+        
         const usersResponse = await fetch('https://e-commerce-back-xy6s.onrender.com/api/users');
         const usersData = await usersResponse.json();
         
@@ -180,7 +181,7 @@ function AdminDashboard() {
 
             <button 
               className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
-            onClick={handleLogout}>
+            onClick={adminLogout}>
               <HiOutlineLogout className="mr-3" /> Logout
             </button>
           </div>
@@ -254,7 +255,7 @@ function AdminDashboard() {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-sm text-gray-500 mb-1">{stat.title}</p>
-                        <h3 className="text-2xl font-bold text-[#433d61]">{stat.value}</h3>
+                        <h3 className="text-2xl font-bold text-[#433d61]">{localStorage.getItem('allUsers')}</h3>
                       </div>
                       <div className="p-2 bg-[#634bc1]/10 text-[#634bc1] rounded-lg">
                         {stat.icon}
