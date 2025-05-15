@@ -11,7 +11,7 @@ const Users: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [addUserModal, setAddUserModal] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
 const fetchUsers = async () => {
   try {
     const isLocal = window.location.hostname === 'localhost';
