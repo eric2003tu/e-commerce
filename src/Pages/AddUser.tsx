@@ -46,9 +46,13 @@ const AddUser: React.FC = () => {
     setIsSubmitting(true);
     setError('');
     setSuccess('');
+      const isLocal = window.location.hostname === 'localhost';
+const api = isLocal
+  ? 'http://localhost:5000/api/v1/users/signup'
+  : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/signup';
 
     try {
-      const response = await fetch('https://e-commerce-back-xy6s.onrender.com/api/addUsers', {
+      const response = await fetch(`${api}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +87,7 @@ const AddUser: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto w-fit bg-white rounded-lg shadow-md">
+    <div className="p-6 max-w-xl mx-auto w-fit">
       <h2 className="text-xl font-semibold mb-4 text-gray-800">Add New User</h2>
 
       {success && (
