@@ -151,14 +151,8 @@ const UploadedProducts: React.FC = () => {
                 <h3 className="font-semibold text-lg text-gray-800 line-clamp-2">
                   {product.name}
                 </h3>
-                <span className="text-gray-500 text-sm">
-                  {product.category}
-                </span>
               </div>
               
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                {product.description}
-              </p>
               
               <div className="flex justify-between items-center mb-4">
                 <span className="font-bold text-gray-900">

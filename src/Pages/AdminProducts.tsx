@@ -3,7 +3,7 @@ import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { IoClose } from 'react-icons/io5';
 import AddProduct from './AddProduct';
-import ProductSkeleton from './ProductSkeleton';// You'll need to create this component
+import ProductSkeleton from './ProductSkeleton';
 
 interface Product {
   _id: string;
@@ -41,7 +41,16 @@ const Products: React.FC = () => {
         }
         
         const { products: fetchedProducts } = await response.json();
-        setProducts(fetchedProducts || []);
+        
+        // Transform image paths to full URLs
+        const productsWithImageUrls = fetchedProducts.map((product: Product) => ({
+          ...product,
+          images: product.images.map(image => 
+            image.startsWith('http') ? image : `${API_BASE.replace('/api/v1', '')}${image}`
+          )
+        }));
+        
+        setProducts(productsWithImageUrls || []);
       } catch (err) {
         console.error('Failed to fetch products:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch products');
@@ -77,7 +86,14 @@ const Products: React.FC = () => {
   };
 
   const handleProductAdded = (newProduct: Product) => {
-    setProducts(prev => [...prev, newProduct]);
+    // Ensure new product images have proper URLs
+    const productWithUrls = {
+      ...newProduct,
+      images: newProduct.images.map(image => 
+        image.startsWith('http') ? image : `${API_BASE.replace('/api/v1', '')}${image}`
+      )
+    };
+    setProducts(prev => [...prev, productWithUrls]);
     setAddProductOpen(false);
   };
 
@@ -145,66 +161,69 @@ const Products: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {products.map((product) => (
-                  <tr key={product._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex-shrink-0 h-10 w-10">
-                        <img
-                          className="h-10 w-10 rounded object-cover"
-                          src={product.images[0] || '/placeholder-product.jpg'}
-                          alt={product.name}
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/placeholder-product.jpg';
-                          }}
-                        />
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {product.name}
-                      </div>
-                      {product.description && (
-                        <div className="text-sm text-gray-500 truncate max-w-xs">
-                          {product.description}
+                {products.map((product) => {
+                  const imageUrl = product.images[0] || '/placeholder-product.jpg';
+                  return (
+                    <tr key={product._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex-shrink-0 h-10 w-10">
+                          <img
+                            className="h-10 w-10 rounded object-cover"
+                            src={imageUrl}
+                            alt={product.name}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/placeholder-product.jpg';
+                            }}
+                          />
                         </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      ${product.price.toFixed(2)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                        {product.category}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {product.stock > 0 ? (
-                        <span className="text-green-600">{product.stock} in stock</span>
-                      ) : (
-                        <span className="text-red-600">Out of stock</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex justify-end space-x-3">
-                        <Link
-                          to={`/edit-product/${product._id}`}
-                          className="text-indigo-600 hover:text-indigo-900"
-                          aria-label={`Edit ${product.name}`}
-                        >
-                          <FiEdit size={18} />
-                        </Link>
-                        <button
-                          onClick={() => deleteProduct(product._id)}
-                          disabled={deletingId === product._id}
-                          className={`text-red-600 hover:text-red-900 ${deletingId === product._id ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          aria-label={`Delete ${product.name}`}
-                        >
-                          <FiTrash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {product.name}
+                        </div>
+                        {product.description && (
+                          <div className="text-sm text-gray-500 truncate max-w-xs">
+                            {product.description}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${product.price.toFixed(2)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                          {product.category}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {product.stock > 0 ? (
+                          <span className="text-green-600">{product.stock} in stock</span>
+                        ) : (
+                          <span className="text-red-600">Out of stock</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex justify-end space-x-3">
+                          <Link
+                            to={`/edit-product/${product._id}`}
+                            className="text-indigo-600 hover:text-indigo-900"
+                            aria-label={`Edit ${product.name}`}
+                          >
+                            <FiEdit size={18} />
+                          </Link>
+                          <button
+                            onClick={() => deleteProduct(product._id)}
+                            disabled={deletingId === product._id}
+                            className={`text-red-600 hover:text-red-900 ${deletingId === product._id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            aria-label={`Delete ${product.name}`}
+                          >
+                            <FiTrash2 size={18} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
