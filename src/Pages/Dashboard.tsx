@@ -19,6 +19,7 @@ function AdminDashboard() {
   ]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [usersCount, setUsersCount] = useState(0); // New state for users count
 
 
   useEffect(() => {
@@ -40,53 +41,23 @@ function AdminDashboard() {
     }
   },[navigate])
 
-//      const adminLogout=()=> {
-//         const isLocal = window.location.hostname === 'localhost';
-// const api = isLocal
-//   ? 'http://localhost:5000/api/v1/users/admin-logout'
-//   : 'https://e-commerce-back-xy6s.onrender.com/api/v1/users/admin-logout';
-//     fetch(`${api}`, {
-//       method: 'POST',
-//       credentials: 'include'
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//       if (data.success) {
-//         // Optionally clear frontend storage if used
-//         // localStorage.removeItem('token');
-//         // sessionStorage.clear();
-  
-//         // Redirect to login page or show a message
-//         navigate('/login') // adjust path as needed
-//       } else {
-//         console.error('Logout failed:', data.message);
-//       }
-//     })
-//     .catch(err => {
-//       console.error('Error logging out:', err);
-//     });
-//   }
-
   useEffect(() => {
     // Fetch the statistics data
     const fetchStats = async () => {
       try {
-        // Fetch users data
-        
-        const usersResponse = await fetch('https://e-commerce-back-xy6s.onrender.com/api/users');
-        const usersData = await usersResponse.json();
-        
         // Fetch products data
         const productsResponse = await fetch('https://e-commerce-back-xy6s.onrender.com/api/products');
         const productsData = await productsResponse.json();
         
-        // Count active users (assuming active users are those with isActive: true)
-        const activeUsersCount = usersData.filter(user => user.isActive).length;
+        // Get users count from localStorage but don't use it for stats
+        const storedUsers = localStorage.getItem('allUsers');
+        const usersCount = storedUsers ? parseInt(storedUsers) : 0;
+        setUsersCount(usersCount);
         
         setStats([
           { title: 'Total Products', value: productsData.length, icon: <FiShoppingBag /> },
-          { title: 'Active Users', value: activeUsersCount, icon: <FiUsers /> },
-          { title: 'Monthly Sales', value: '$0', icon: <FiBarChart2 /> }, // Placeholder for sales data
+          { title: 'Active Users', value: usersCount, icon: <FiUsers /> },
+          { title: 'Monthly Sales', value: '$0', icon: <FiBarChart2 /> },
         ]);
       } catch (error) {
         console.error('Error fetching statistics:', error);
@@ -181,7 +152,7 @@ function AdminDashboard() {
 
             <button 
               className="flex items-center p-3 mt-4 hover:bg-[#634bc1]/50 rounded-lg text-sm"
-            onClick={adminLogout}>
+            onClick={handleLogout}>
               <HiOutlineLogout className="mr-3" /> Logout
             </button>
           </div>
@@ -255,7 +226,7 @@ function AdminDashboard() {
                     <div className="flex justify-between items-start">
                       <div>
                         <p className="text-sm text-gray-500 mb-1">{stat.title}</p>
-                        <h3 className="text-2xl font-bold text-[#433d61]">{localStorage.getItem('allUsers')}</h3>
+                        <h3 className="text-2xl font-bold text-[#433d61]">{stat.value}</h3>
                       </div>
                       <div className="p-2 bg-[#634bc1]/10 text-[#634bc1] rounded-lg">
                         {stat.icon}
@@ -279,7 +250,7 @@ function AdminDashboard() {
           )}
 
           {activeTab === 'users' && (
-            <Users />
+            <Users users={JSON.parse(localStorage.getItem('allUsers')) || []} />
           )}
 
           {activeTab === 'settings' && (
