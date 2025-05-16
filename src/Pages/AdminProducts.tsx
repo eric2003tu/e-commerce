@@ -1,36 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 import AddProduct from './AddProduct';
-import { IoClose } from "react-icons/io5";
+import ProductSkeleton from './ProductSkeleton';// You'll need to create this component
 
 interface Product {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   category: string;
   stock: number;
-  image: string;
+  images: string[];
+  description?: string;
+  featured?: boolean;
 }
 
-function Products() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [addProductOpen, setAddProductOpen] = useState(false);
+const API_BASE = import.meta.env.VITE_API_BASE || 
+  (window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000/api/v1' 
+    : 'https://e-commerce-back-xy6s.onrender.com/api/v1');
 
-  useEffect(function () {
+const Products: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [addProductOpen, setAddProductOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
+      setError(null);
+      
       try {
-        const response = await fetch('https://shopEasy.com/api/products');
-        if (!response.ok) throw new Error('Failed to fetch products');
-        const data = await response.json();
-        setProducts(data);
-        setError('');
+        const response = await fetch(`${API_BASE}/products`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const { products: fetchedProducts } = await response.json();
+        setProducts(fetchedProducts || []);
       } catch (err) {
-        console.error(err);
-        setError('Could not load products.');
+        console.error('Failed to fetch products:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch products');
       } finally {
         setIsLoading(false);
       }
@@ -39,130 +53,214 @@ function Products() {
     fetchProducts();
   }, []);
 
-  async function deleteProduct(id: string) {
+  const deleteProduct = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
+    setDeletingId(id);
+    
     try {
-      const response = await fetch(`https://shopEasy.com/api/products/${id}`, {
+      const response = await fetch(`${API_BASE}/products/${id}`, {
         method: 'DELETE',
       });
-      if (!response.ok) throw new Error('Failed to delete product');
-      setProducts(products.filter(p => p.id !== id));
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setProducts(prev => prev.filter(p => p._id !== id));
     } catch (err) {
-      console.error(err);
-      alert('Error deleting product');
+      console.error('Failed to delete product:', err);
+      alert(err instanceof Error ? err.message : 'Failed to delete product');
+    } finally {
+      setDeletingId(null);
     }
-  }
+  };
+
+  const handleProductAdded = (newProduct: Product) => {
+    setProducts(prev => [...prev, newProduct]);
+    setAddProductOpen(false);
+  };
 
   const closeModal = () => setAddProductOpen(false);
 
   return (
-    <div className="py-6 w-full relative">
-      <div className="flex items-center justify-between mb-6 w-full">
-        <h1 className="text-2xl font-bold">Products</h1>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h1 className="text-3xl font-bold text-gray-800">Product Management</h1>
         <button
-          className="flex items-center bg-[#634bc1] text-white cursor-pointer px-4 py-2 rounded-lg"
           onClick={() => setAddProductOpen(true)}
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
+          aria-label="Add new product"
         >
-          <FiPlus className="mr-2" />Add Product
+          <FiPlus size={18} />
+          Add Product
         </button>
       </div>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
-          {error}
+        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
+          <p className="font-medium">Error:</p>
+          <p>{error}</p>
         </div>
       )}
 
-      {isLoading ? (
-        <div className="text-center py-8">Loading products...</div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-2 border">Image</th>
-                <th className="px-4 py-2 border">Name</th>
-                <th className="px-4 py-2 border">Price</th>
-                <th className="px-4 py-2 border">Category</th>
-                <th className="px-4 py-2 border">Stock</th>
-                <th className="px-4 py-2 border">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.length === 0 ? (
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        {isLoading ? (
+          <ProductSkeleton count={5} />
+        ) : products.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">
+              {error ? 'Error loading products' : 'No products found.'}
+            </p>
+            <button
+              onClick={() => setAddProductOpen(true)}
+              className="mt-4 text-indigo-600 hover:text-indigo-800 font-medium"
+            >
+              Add your first product
+            </button>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
-                  <td colSpan="6" className="text-center py-4">
-                    {error ? 'Error loading products' : 'No products found.'}
-                  </td>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Image
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Category
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Stock
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
-              ) : (
-                products.map((product) => (
-                  <tr key={product.id} className="border-t">
-                    <td className="px-4 py-2 border">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-16 h-16 object-cover rounded"
-                      />
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {products.map((product) => (
+                  <tr key={product._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex-shrink-0 h-10 w-10">
+                        <img
+                          className="h-10 w-10 rounded object-cover"
+                          src={product.images[0] || '/placeholder-product.jpg'}
+                          alt={product.name}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/placeholder-product.jpg';
+                          }}
+                        />
+                      </div>
                     </td>
-                    <td className="px-4 py-2 border">{product.name}</td>
-                    <td className="px-4 py-2 border">${product.price.toFixed(2)}</td>
-                    <td className="px-4 py-2 border">{product.category}</td>
-                    <td className="px-4 py-2 border">{product.stock}</td>
-                    <td className="px-4 py-2 border flex gap-3">
-                      <Link
-                        to={`/edit-product/${product.id}`}
-                        className="text-blue-500 hover:text-blue-700"
-                        aria-label={`Edit ${product.name}`}
-                      >
-                        <FiEdit />
-                      </Link>
-                      <button
-                        onClick={() => deleteProduct(product.id)}
-                        className="text-red-500 hover:text-red-700"
-                        aria-label={`Delete ${product.name}`}
-                      >
-                        <FiTrash2 />
-                      </button>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">
+                        {product.name}
+                      </div>
+                      {product.description && (
+                        <div className="text-sm text-gray-500 truncate max-w-xs">
+                          {product.description}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      ${product.price.toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        {product.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {product.stock > 0 ? (
+                        <span className="text-green-600">{product.stock} in stock</span>
+                      ) : (
+                        <span className="text-red-600">Out of stock</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex justify-end space-x-3">
+                        <Link
+                          to={`/edit-product/${product._id}`}
+                          className="text-indigo-600 hover:text-indigo-900"
+                          aria-label={`Edit ${product.name}`}
+                        >
+                          <FiEdit size={18} />
+                        </Link>
+                        <button
+                          onClick={() => deleteProduct(product._id)}
+                          disabled={deletingId === product._id}
+                          className={`text-red-600 hover:text-red-900 ${deletingId === product._id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          aria-label={`Delete ${product.name}`}
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
-      {/* Modal */}
+      {/* Add Product Modal */}
       {addProductOpen && (
-        <div 
-          className="grid grid-cols-1 fixed inset-0 bg-gray-900/60 bg-opacity-50  items-center justify-items-center z-50"
-          onClick={closeModal}
-        >
-          <div 
-            className=" grid grid-cols-1 justify-self-center justify-items-center bg-white rounded-lg shadow-lg p-6 relative max-w-2xl w-full mx-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 transition-opacity"
+              aria-hidden="true"
               onClick={closeModal}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              aria-label="Close modal"
             >
-              <IoClose size={24} />
-            </button>
-            <AddProduct 
-              onClose={closeModal} 
-              onProductAdded={(newProduct) => {
-                setProducts([...products, newProduct]);
-                closeModal();
-              }}
-            />
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+
+            <div
+              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    Add New Product
+                  </h3>
+                  <button
+                    onClick={closeModal}
+                    className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                    aria-label="Close"
+                  >
+                    <IoClose size={24} />
+                  </button>
+                </div>
+                <div className="mt-4">
+                  <AddProduct
+                    onClose={closeModal}
+                    onProductAdded={handleProductAdded}
+                    apiBase={API_BASE}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
-}
+};
 
 export default Products;

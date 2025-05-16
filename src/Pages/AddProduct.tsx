@@ -7,8 +7,9 @@ const AddProduct :React.FC =()=> {
     price: '',
     category: '',
     stock: '',
-    imageUrl: '',
-    description: ''
+    images: '',
+    description: '',
+    seller: ''
   });
 
   const [error, setError] = useState('');
@@ -21,7 +22,7 @@ const AddProduct :React.FC =()=> {
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch('https://e-commerce-back-xy6s.onrender.com/api/products', {
+    fetch('https://e-commerce-back-xy6s.onrender.com/api/v1/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -79,12 +80,13 @@ const AddProduct :React.FC =()=> {
           className="lg:w-4/5 w-full p-2 border rounded"
         />
         <textarea name="description" placeholder="Description..." value={formData.description} onChange={handleChange} required    className="lg:w-4/5 w-full p-2 border rounded"/>
+        <input type='text' name='seller' value={formData.seller} placeholder='Seller name' onChange={handleChange} required className="lg:w-4/5 w-full p-2 border rounded"/>
 
         <input
           name="image"
-          type="url"
+          type="file"
           placeholder="Image URL"
-          value={formData.imageUrl}
+          value={formData.images}
           onChange={handleChange}
           required
           className="lg:w-4/5 w-full p-2 border rounded"

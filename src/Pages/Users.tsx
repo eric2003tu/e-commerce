@@ -10,6 +10,7 @@ const Users: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [addUserModal, setAddUserModal] = useState(false);
+  const [role, setRole] = useState<string>('user')
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -51,32 +52,67 @@ const Users: React.FC = () => {
     user.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleDelete = async (userId: string) => {
-    if (!window.confirm('Are you sure you want to delete this user?')) return;
-    
-    try {
-      const isLocal = window.location.hostname === 'localhost';
-      const apiUrl = isLocal
-        ? `http://localhost:5000/api/v1/users/${userId}`
-        : `https://e-commerce-back-xy6s.onrender.com/api/v1/users/${userId}`;
+const handleDelete = async (userId: string) => {
+  if (!window.confirm('Are you sure you want to delete this user?')) return;
+  
+  try {
+    const isLocal = window.location.hostname === 'localhost';
+    const apiUrl = isLocal
+      ? `http://localhost:5000/api/v1/users/${userId}`
+      : `https://e-commerce-back-xy6s.onrender.com/api/v1/users/${userId}`;
 
-      const response = await fetch(apiUrl, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete user');
+    const response = await fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
       }
+    });
 
-      setUsers(users.filter(user => user.id !== userId));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete user');
-      console.error('Error deleting user:', err);
+    if (!response.ok) {
+      throw new Error('Failed to delete user');
     }
-  };
+
+    // Update the local state to remove the deleted user
+    setUsers(users.filter(user => user.id !== userId));
+    
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Failed to delete user';
+    setError(errorMessage);
+    console.error('Error deleting user:', err);
+  }
+};
+
+const handleUpdate =async (userId: string) => {
+  if (!window.confirm('Are you sure you want to update this user?')) return;
+  const isLocal = window.location.hostname === 'localhost';
+  const apiUrl = isLocal
+    ? `http://localhost:5000/api/v1/users/${userId}`
+    : `https://e-commerce-back-xy6s.onrender.com/api/v1/users/${userId}`;
+  
+ fetch(apiUrl, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    role: role !== 'admin'? 'user' : 'admin' // Fixed ternary syntax
+  })
+})
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log("User role updated successfully", data);
+    // You might want to update the UI or state here
+  })
+  .catch((error) => {
+    console.error("Error updating user role:", error.message);
+  });
+};
+  
 
   return (
     <div className="py-6 w-full relative">
@@ -171,7 +207,7 @@ const Users: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button 
                         className="text-[#634bc1] hover:text-[#5340a1] mr-4"
-                        onClick={() => console.log('Edit', user.id)} // Implement edit functionality
+                        onClick={() =>handleUpdate(user.id)} // Implement edit functionality
                       >
                         <FiEdit size={18} />
                       </button>
