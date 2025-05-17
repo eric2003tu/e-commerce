@@ -1,49 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AddProduct :React.FC =()=> {
-  const [formData, setFormData] = useState({
+interface FormData {
+  name: string;
+  price: string;
+  category: string;
+  stock: string;
+  images: File[];
+  description: string;
+  seller: string;
+}
+
+const AddProduct: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     price: '',
     category: '',
     stock: '',
-    images: '',
+    images: [],
     description: '',
     seller: ''
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [message, setMessage] = useState<string>('')
+  const [color, setColor] = useState<string>('red')
 
-  function handleChange(e) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
-  function handleSubmit(e) {
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFormData({ ...formData, images: Array.from(e.target.files) });
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
 
-    fetch('https://e-commerce-back-xy6s.onrender.com/api/v1/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to add product');
-        navigate('/products');
-      })
-      .catch(err => {
-        console.error(err);
-        setError('Could not add product');
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('price', formData.price);
+      formDataToSend.append('category', formData.category);
+      formDataToSend.append('stock', formData.stock);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('seller', formData.seller);
+      
+      formData.images.forEach((image) => {
+        formDataToSend.append('images', image);
       });
-  }
+
+    const isLocal = window.location.hostname === 'localhost';
+    const apiUrl = isLocal
+    ? `http://localhost:5000/api/v1/products`
+    : `https://e-commerce-back-xy6s.onrender.com/api/v1/products`;
+      const response = await fetch(`${apiUrl}`, {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        setMessage('Failed to add the product')
+        setColor('red')
+        setTimeout(()=>{
+          setMessage('')
+        },4000)
+        throw new Error('Failed to add product');
+      }
+
+      setMessage('product Added successfuly')
+      setColor('green')
+      setTimeout(()=>{
+      setMessage('')
+      navigate('/admin');
+        },4000)
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : 'Could not add product');
+       setMessage('Could not add the product')
+       setColor('red')
+      setTimeout(()=>{
+      setMessage('')
+        },4000)
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-6 max-w-xl mx-auto w-fit">
       <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
 
-      {error && <p className="text-red-600 mb-2">{error}</p>}
-
-      <form onSubmit={handleSubmit} className="space-y-4 ">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <h1 style={{color : color}}>{message}</h1>
         <input
           name="name"
           placeholder="Product Name"
@@ -54,10 +109,9 @@ const AddProduct :React.FC =()=> {
         />
         <input
           name="price"
-          type="text"
-          step="0.01"
+          type="number"
           placeholder="Price"
-          value={parseInt( formData.price)}
+          value={formData.price}
           onChange={handleChange}
           required
           className="lg:w-4/5 w-full p-2 border rounded"
@@ -72,35 +126,53 @@ const AddProduct :React.FC =()=> {
         />
         <input
           name="stock"
-          type="text"
+          type="number"
           placeholder="Stock Quantity"
-          value={parseInt(formData.stock)}
+          value={formData.stock}
           onChange={handleChange}
           required
           className="lg:w-4/5 w-full p-2 border rounded"
         />
-        <textarea name="description" placeholder="Description..." value={formData.description} onChange={handleChange} required    className="lg:w-4/5 w-full p-2 border rounded"/>
-        <input type='text' name='seller' value={formData.seller} placeholder='Seller name' onChange={handleChange} required className="lg:w-4/5 w-full p-2 border rounded"/>
+        <textarea 
+          name="description" 
+          placeholder="Description..." 
+          value={formData.description} 
+          onChange={handleChange} 
+          required
+          className="lg:w-4/5 w-full p-2 border rounded"
+        />
+        <input 
+          type="text" 
+          name="seller" 
+          value={formData.seller} 
+          placeholder="Seller name" 
+          onChange={handleChange} 
+          required 
+          className="lg:w-4/5 w-full p-2 border rounded"
+        />
 
         <input
-          name="image"
+          name="images"
           type="file"
-          placeholder="Image URL"
-          value={formData.images}
-          onChange={handleChange}
+          onChange={handleImageChange}
+          multiple
           required
+          accept="image/*"
           className="lg:w-4/5 w-full p-2 border rounded"
         />
-        <br/>
+        <br />
         <button
           type="submit"
-          className="bg-[#634bc1] text-white grid justify-self-center px-4 py-2 rounded hover:bg-[#5239b1]"
+          disabled={isLoading}
+          className={`bg-[#634bc1] text-white grid justify-self-center px-4 w-full py-2 rounded hover:bg-[#5239b1] ${
+            isLoading ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
-          Add Product
+          {isLoading ? 'Adding...' : 'Add Product'}
         </button>
       </form>
     </div>
   );
-}
+};
 
 export default AddProduct;

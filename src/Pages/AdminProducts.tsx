@@ -14,6 +14,7 @@ interface Product {
   images: string[];
   description?: string;
   featured?: boolean;
+  seller: string;
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE || 
@@ -100,7 +101,7 @@ const Products: React.FC = () => {
   const closeModal = () => setAddProductOpen(false);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto py-8">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Product Management</h1>
         <button
@@ -150,6 +151,9 @@ const Products: React.FC = () => {
                     Price
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Seller
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Category
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -192,6 +196,11 @@ const Products: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                          {product.seller}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-green-800">
                           {product.category}
                         </span>
                       </td>
@@ -232,49 +241,15 @@ const Products: React.FC = () => {
 
       {/* Add Product Modal */}
       {addProductOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div
-              className="fixed inset-0 transition-opacity"
-              aria-hidden="true"
-              onClick={closeModal}
+        <div className="fixed inset-0 bg-gray-900/60 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 relative max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <button 
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              onClick={() => setAddProductOpen(false)}
             >
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-
-            <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span>
-
-            <div
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900">
-                    Add New Product
-                  </h3>
-                  <button
-                    onClick={closeModal}
-                    className="text-gray-400 hover:text-gray-500 focus:outline-none"
-                    aria-label="Close"
-                  >
-                    <IoClose size={24} />
-                  </button>
-                </div>
-                <div className="mt-4">
-                  <AddProduct
-                    onClose={closeModal}
-                    onProductAdded={handleProductAdded}
-                    apiBase={API_BASE}
-                  />
-                </div>
-              </div>
-            </div>
+              <IoClose size={24} />
+            </button>
+            <AddProduct />
           </div>
         </div>
       )}
